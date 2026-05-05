@@ -184,6 +184,15 @@ export default async function AdminPage({
                 </p>
                 <button className="rounded-md bg-pine px-5 py-3 font-black text-white lg:col-span-3" type="submit">Shto anëtar</button>
               </form>
+              <div className="mt-6 flex flex-wrap items-center justify-between gap-3 rounded-lg border border-ink/10 bg-white p-4 shadow-sm">
+                <div>
+                  <h3 className="font-black text-ink">Eksport CSV</h3>
+                  <p className="text-sm font-semibold text-ink/60">Shkarko të gjitha rekordet e anëtarëve për administrim.</p>
+                </div>
+                <a className="rounded-md bg-ink px-4 py-2 text-sm font-black text-white" href="/api/admin/members/export">
+                  Export CSV
+                </a>
+              </div>
               <MemberCsvImport />
               <div className="mt-5 grid gap-3">
                 {data.members.map((member) => (
