@@ -52,10 +52,6 @@ export function PublicSite({ data, lang, page = "home", saved = false }: PublicS
 
   return (
     <div>
-      <div className="border-b border-ink/10 bg-ink px-4 py-2 text-center text-xs font-semibold text-white">
-        {t.demo}
-      </div>
-
       <header className="sticky top-0 z-40 border-b border-ink/10 bg-white/90 backdrop-blur-xl">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3">
           <Link href={withLang("/", lang)} aria-label="Shoqata Rainca">
@@ -339,7 +335,7 @@ export function PublicSite({ data, lang, page = "home", saved = false }: PublicS
         <div className="mx-auto flex max-w-7xl flex-col gap-4 px-4 py-8 md:flex-row md:items-center md:justify-between">
           <Logo logoUrl={data.settings.logoUrl} />
           <div className="text-sm font-semibold text-ink/58">
-            {t.demo} · <Link href="/admin" className="font-black text-pine">{t.admin}</Link>
+            <Link href="/admin" className="font-black text-pine">{t.admin}</Link>
           </div>
         </div>
       </footer>
