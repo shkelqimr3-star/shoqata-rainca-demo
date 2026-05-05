@@ -113,7 +113,7 @@ export default async function AdminPage({
                 <Field label="Titel Deutsch" name="titleDe" required />
                 <Field label="Kategori" name="category" required />
                 <Field label="Status" name="status" required />
-                <Field label="Viti" name="year" type="number" defaultValue={String(new Date().getFullYear())} required />
+                <YearField label="Viti" name="year" defaultValue={String(new Date().getFullYear())} required />
                 <Field label="Buxheti CHF" name="budget" type="number" />
                 <ImageUploadField label="Image URL" name="imageUrl" />
                 <label className="flex items-center gap-2 pt-6 font-bold"><input name="isPublished" type="checkbox" defaultChecked /> Publiko</label>
@@ -126,7 +126,7 @@ export default async function AdminPage({
 
             <AdminSection title="Raportet financiare">
               <form action="/api/admin/report" method="post" encType="multipart/form-data" className="grid gap-4 lg:grid-cols-2">
-                <Field label="Viti" name="year" type="number" required />
+                <YearField label="Viti" name="year" defaultValue={String(new Date().getFullYear())} required />
                 <Field label="Titulli" name="title" required />
                 <Field label="Të hyrat CHF" name="income" type="number" required />
                 <Field label="Shpenzimet CHF" name="expenses" type="number" required />
@@ -151,7 +151,7 @@ export default async function AdminPage({
                 <Field label="Mbiemri" name="surname" required />
                 <Field label="Shteti" name="country" />
                 <Field label="Qyteti" name="city" />
-                <Field label="Viti" name="year" type="number" />
+                <YearField label="Viti" name="year" />
                 <label>
                   <span className="admin-label">Status</span>
                   <select className="admin-input mt-1" name="status" defaultValue="PENDING">
@@ -303,6 +303,35 @@ function Field({
     <label>
       <span className="admin-label">{label}</span>
       <input className="admin-input mt-1" name={name} type={type} defaultValue={defaultValue} placeholder={placeholder} required={required} />
+    </label>
+  );
+}
+
+function YearField({
+  label,
+  name,
+  defaultValue,
+  required = false
+}: {
+  label: string;
+  name: string;
+  defaultValue?: string;
+  required?: boolean;
+}) {
+  return (
+    <label>
+      <span className="admin-label">{label}</span>
+      <input
+        className="admin-input mt-1"
+        name={name}
+        type="number"
+        min="2010"
+        max="2035"
+        step="1"
+        defaultValue={defaultValue}
+        placeholder="2025"
+        required={required}
+      />
     </label>
   );
 }
