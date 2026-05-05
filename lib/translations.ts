@@ -50,9 +50,9 @@ export const copy = {
     iban: "IBAN",
     qrNote: "QR dhe të dhënat bankare janë të editueshme nga administrimi.",
     applyTitle: "Aplikim për anëtarësi",
-    applyText: "Dërgo të dhënat bazë. Kryesia mund ta shqyrtojë aplikimin nga administrimi.",
+    applyText: "Plotësoni aplikimin për anëtarësi. Pas pranimit, shoqata ju kontakton për konfirmim dhe pagesë.",
     submit: "Dërgo",
-    saved: "Faleminderit. Aplikimi u regjistrua për shqyrtim.",
+    saved: "Faleminderit për aplikimin. Shoqata Rainca do t’ju kontaktojë për konfirmim dhe pagesë.",
     admin: "Admin"
   },
   de: {
@@ -89,9 +89,9 @@ export const copy = {
     iban: "IBAN",
     qrNote: "QR und Bankdaten sind im Adminbereich bearbeitbar.",
     applyTitle: "Mitgliedsantrag",
-    applyText: "Senden Sie die Basisdaten. Der Vorstand kann den Antrag im Adminbereich prüfen.",
+    applyText: "Füllen Sie den Mitgliedsantrag aus. Nach Eingang kontaktiert Sie der Verein zur Bestätigung und Zahlung.",
     submit: "Senden",
-    saved: "Danke. Der Antrag wurde zur Prüfung erfasst.",
+    saved: "Danke für den Antrag. Shoqata Rainca wird Sie zur Bestätigung und Zahlung kontaktieren.",
     admin: "Admin"
   }
 } satisfies Record<Lang, Record<string, string>>;

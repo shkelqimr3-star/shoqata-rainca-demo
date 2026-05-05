@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { FinancialChart } from "@/components/Charts";
+import { CopyIbanButton } from "@/components/CopyIbanButton";
 import { Logo } from "@/components/Logo";
 import { MembersDirectory } from "@/components/MembersDirectory";
 import { SafeImage } from "@/components/SafeImage";
@@ -46,6 +47,7 @@ function AssetImage({ src, alt, className }: { src?: string | null; alt: string;
 
 export function PublicSite({ data, lang, page = "home", saved = false }: PublicSiteProps) {
   const t = copy[lang];
+  const officialIban = "CH28 0900 0000 8579 6173 2";
   const active = pageMap[page] ?? page;
   const showAll = active === "home";
   const latestReport = data.reports[0];
@@ -208,6 +210,18 @@ export function PublicSite({ data, lang, page = "home", saved = false }: PublicS
             <div className="rounded-lg border border-ink/10 bg-white p-6 shadow-sm">
               <SectionTitle eyebrow={tx(lang, "Komuniteti", "Gemeinschaft")} title={t.applyTitle} compact />
               <p className="mb-5 leading-7 text-ink/70">{t.applyText}</p>
+              <div className="mb-5 grid gap-3 rounded-lg bg-pine/5 p-4 sm:grid-cols-2">
+                <div>
+                  <p className="text-xs font-black uppercase tracking-wide text-pine">{tx(lang, "Zvicër", "Schweiz")}</p>
+                  <p className="mt-1 text-lg font-black text-ink">100 CHF</p>
+                  <p className="text-sm font-semibold text-ink/60">{tx(lang, "Anëtarësi vjetore", "Jahresmitgliedschaft")}</p>
+                </div>
+                <div>
+                  <p className="text-xs font-black uppercase tracking-wide text-pine">{tx(lang, "Jashtë Zvicrës", "Außerhalb der Schweiz")}</p>
+                  <p className="mt-1 text-lg font-black text-ink">80 EUR</p>
+                  <p className="text-sm font-semibold text-ink/60">{tx(lang, "Konvertohet në CHF", "Wird in CHF umgerechnet")}</p>
+                </div>
+              </div>
               {saved && <p className="mb-5 rounded-md bg-pine/10 px-4 py-3 font-bold text-pine">{t.saved}</p>}
               <form action="/api/apply" method="post" className="grid gap-3 sm:grid-cols-2">
                 <input className="admin-input" name="fullName" placeholder={tx(lang, "Emri dhe mbiemri", "Vor- und Nachname")} required />
@@ -227,11 +241,16 @@ export function PublicSite({ data, lang, page = "home", saved = false }: PublicS
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <SafeImage src={data.settings.qrImageUrl} alt="QR payment" className="h-full w-full p-3" fallbackClassName="bg-white" imgClassName="object-contain" />
               </div>
-              <div className="space-y-3 text-sm font-semibold text-ink/72">
-                <p>{t.qrNote}</p>
-                {data.settings.iban && <p><span className="font-black text-ink">{t.iban}:</span> {data.settings.iban}</p>}
-                {data.settings.bankName && <p>{data.settings.bankName}</p>}
-                {data.settings.paymentNote && <p>{data.settings.paymentNote}</p>}
+              <div className="space-y-4 text-sm font-semibold text-ink/72">
+                <div className="rounded-lg border border-ink/10 bg-ink/[0.03] p-4">
+                  <p className="font-black text-ink">Verein Rainca</p>
+                  <p>8000 Zürich</p>
+                  <p>PostFinance AG</p>
+                  <p><span className="font-black text-ink">{t.iban}:</span> {officialIban}</p>
+                  <p><span className="font-black text-ink">BIC:</span> POFICHBEXXX</p>
+                </div>
+                <CopyIbanButton iban={officialIban} label={tx(lang, "Kopjo IBAN", "IBAN kopieren")} copiedLabel={tx(lang, "IBAN u kopjua.", "IBAN kopiert.")} />
+                <p>{tx(lang, "Ju lutemi shënoni emrin dhe qëllimin e pagesës.", "Bitte Namen und Zahlungszweck angeben.")}</p>
               </div>
             </div>
           </section>
