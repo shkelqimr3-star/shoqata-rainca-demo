@@ -1,3 +1,5 @@
+import { SafeImage } from "@/components/SafeImage";
+
 type LogoProps = {
   logoUrl?: string | null;
   compact?: boolean;
@@ -7,8 +9,7 @@ export function Logo({ logoUrl, compact = false }: LogoProps) {
   return (
     <div className="flex items-center gap-3">
       {logoUrl ? (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img src={logoUrl} alt="Shoqata Rainca" className="h-11 w-11 rounded-full object-contain" />
+        <SafeImage src={logoUrl} alt="Shoqata Rainca" className="h-11 w-11 overflow-hidden rounded-full" fallbackClassName="bg-ember" imgClassName="object-contain" />
       ) : (
         <div className="grid h-11 w-11 place-items-center rounded-full bg-ember text-sm font-black text-white ring-4 ring-white">
           SR

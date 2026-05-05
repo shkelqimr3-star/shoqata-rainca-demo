@@ -2,6 +2,7 @@ import Link from "next/link";
 import { FinancialChart } from "@/components/Charts";
 import { Logo } from "@/components/Logo";
 import { MembersDirectory } from "@/components/MembersDirectory";
+import { SafeImage } from "@/components/SafeImage";
 import { copy, navItems, withLang } from "@/lib/translations";
 import type { Lang, PublicData } from "@/lib/types";
 
@@ -40,18 +41,7 @@ function currency(value?: number | null) {
 }
 
 function AssetImage({ src, alt, className }: { src?: string | null; alt: string; className: string }) {
-  if (!src) {
-    return <div className={`${className} asset-fallback`} aria-label={alt} />;
-  }
-
-  return (
-    // eslint-disable-next-line @next/next/no-img-element
-    <img
-      src={src}
-      alt={alt}
-      className="h-full w-full object-cover"
-    />
-  );
+  return <SafeImage src={src} alt={alt} className={className} />;
 }
 
 export function PublicSite({ data, lang, page = "home", saved = false }: PublicSiteProps) {
@@ -105,10 +95,10 @@ export function PublicSite({ data, lang, page = "home", saved = false }: PublicS
         <section className="relative min-h-[76vh] overflow-hidden">
           <div className="absolute inset-0 asset-fallback">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
+            <SafeImage
               src={data.settings.heroImageUrl}
               alt="Raincë aerial view"
-              className="h-full w-full object-cover"
+              className="h-full w-full"
             />
           </div>
           <div className="absolute inset-0 bg-gradient-to-r from-ink/78 via-ink/42 to-ink/10" />
@@ -239,7 +229,7 @@ export function PublicSite({ data, lang, page = "home", saved = false }: PublicS
               <SectionTitle eyebrow={tx(lang, "Kontribute", "Beiträge")} title={t.payment} compact />
               <div className="relative mx-auto my-5 aspect-square max-w-[260px] overflow-hidden rounded-lg border border-ink/10 bg-white">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={data.settings.qrImageUrl} alt="QR payment" className="h-full w-full object-contain p-3" />
+                <SafeImage src={data.settings.qrImageUrl} alt="QR payment" className="h-full w-full p-3" fallbackClassName="bg-white" imgClassName="object-contain" />
               </div>
               <div className="space-y-3 text-sm font-semibold text-ink/72">
                 <p>{t.qrNote}</p>
@@ -257,9 +247,13 @@ export function PublicSite({ data, lang, page = "home", saved = false }: PublicS
             <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
               {data.board.map((person) => (
                 <article key={person.id} className="rounded-lg border border-ink/10 bg-white p-5 shadow-sm">
-                  <div className="mb-4 grid h-14 w-14 place-items-center rounded-full bg-pine/10 font-black text-pine">
-                    {person.fullName.split(" ").map((part) => part[0]).join("").slice(0, 2)}
-                  </div>
+                  {person.imageUrl ? (
+                    <SafeImage src={person.imageUrl} alt={person.fullName} className="mb-4 h-14 w-14 overflow-hidden rounded-full" />
+                  ) : (
+                    <div className="mb-4 grid h-14 w-14 place-items-center rounded-full bg-pine/10 font-black text-pine">
+                      {person.fullName.split(" ").map((part) => part[0]).join("").slice(0, 2)}
+                    </div>
+                  )}
                   <h3 className="text-xl font-black">{person.fullName}</h3>
                   <p className="font-bold text-pine">{tx(lang, person.positionSq, person.positionDe)}</p>
                   <p className="mt-3 leading-7 text-ink/68">{tx(lang, person.bioSq || "", person.bioDe || "")}</p>
@@ -274,13 +268,20 @@ export function PublicSite({ data, lang, page = "home", saved = false }: PublicS
             <SectionTitle eyebrow={tx(lang, "Kalendari", "Kalender")} title={t.events} />
             <div className="grid gap-5 md:grid-cols-2">
               {data.events.map((event) => (
-                <article key={event.id} className="rounded-lg border border-ink/10 bg-white p-5 shadow-sm">
+                <article key={event.id} className="overflow-hidden rounded-lg border border-ink/10 bg-white shadow-sm">
+                  {event.imageUrl && (
+                    <div className="h-44 bg-skywash">
+                      <AssetImage src={event.imageUrl} alt={tx(lang, event.titleSq, event.titleDe)} className="h-full w-full" />
+                    </div>
+                  )}
+                  <div className="p-5">
                   <p className="text-sm font-black text-gold">
                     {new Intl.DateTimeFormat(lang === "de" ? "de-CH" : "sq-AL", { dateStyle: "full", timeStyle: "short" }).format(new Date(event.startsAt))}
                   </p>
                   <h3 className="mt-2 text-xl font-black">{tx(lang, event.titleSq, event.titleDe)}</h3>
                   <p className="mt-3 leading-7 text-ink/68">{tx(lang, event.descriptionSq, event.descriptionDe)}</p>
                   <p className="mt-4 font-bold text-ink/64">{event.location}</p>
+                  </div>
                 </article>
               ))}
             </div>
