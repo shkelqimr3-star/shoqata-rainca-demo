@@ -191,6 +191,30 @@ export function PublicSite({ data, lang, page = "home", saved = false }: PublicS
           <section className="py-10">
             <SectionTitle eyebrow={tx(lang, "Listë publike", "Öffentliche Liste")} title={t.members} />
             <p className="mb-5 max-w-3xl font-semibold leading-7 text-ink/65">{t.publicOnly}</p>
+            <div className="mb-8 rounded-lg border border-ink/10 bg-white p-5 shadow-sm">
+              <h3 className="text-2xl font-black text-ink">{tx(lang, "Statistika e anëtarësisë", "Mitgliederstatistik")}</h3>
+              <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+                {[
+                  ["2023/2024", "214"],
+                  ["2024/2025", "239"],
+                  ["2025/2026", "226"],
+                  [tx(lang, "Konfirmuar 2025", "Bestätigt 2025"), "83"]
+                ].map(([label, value]) => (
+                  <div key={label} className="rounded-lg bg-pine/5 p-4">
+                    <p className="text-sm font-black uppercase tracking-wide text-pine">{label}</p>
+                    <p className="mt-2 text-3xl font-black text-ink">{value}</p>
+                    <p className="text-sm font-semibold text-ink/60">{tx(lang, "anëtarë", "Mitglieder")}</p>
+                  </div>
+                ))}
+              </div>
+              <p className="mt-4 text-sm font-semibold leading-6 text-ink/62">
+                {tx(
+                  lang,
+                  "Shënim: Shumat financiare përfundimtare llogariten sipas pagesave reale të regjistruara në raportin financiar.",
+                  "Hinweis: Die endgültigen Finanzbeträge werden anhand der tatsächlich erfassten Zahlungen im Finanzbericht berechnet."
+                )}
+              </p>
+            </div>
             <MembersDirectory members={data.members} lang={lang} />
           </section>
         )}
