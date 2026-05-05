@@ -1,0 +1,143 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum MemberStatus {
+  PENDING
+  APPROVED
+  ARCHIVED
+}
+
+enum ApplicationStatus {
+  NEW
+  REVIEWING
+  APPROVED
+  DECLINED
+}
+
+model SiteSettings {
+  id              String   @id @default(cuid())
+  associationName String   @default("Shoqata Rainca")
+  officialEmail   String   @default("info@shoqata-rainca.ch")
+  domain          String   @default("shoqata-rainca.ch")
+  heroImageUrl    String?
+  logoUrl         String?
+  qrImageUrl      String?
+  iban            String?
+  bankName        String?
+  paymentNote     String?
+  contactAddress  String?
+  contactPhone    String?
+  statutePdfUrl   String?
+  statutePdfName  String?
+  statutePdfBytes Bytes?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model Project {
+  id          String   @id @default(cuid())
+  titleSq     String
+  titleDe     String
+  summarySq   String
+  summaryDe   String
+  category    String
+  status      String
+  year        Int
+  budget      Decimal? @db.Decimal(12, 2)
+  imageUrl    String?
+  isPublished Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model FinancialReport {
+  id          String   @id @default(cuid())
+  year        Int
+  title       String
+  income      Decimal  @db.Decimal(12, 2)
+  expenses    Decimal  @db.Decimal(12, 2)
+  categories  Json
+  pdfUrl      String?
+  pdfName     String?
+  pdfBytes    Bytes?
+  isPublished Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Member {
+  id                  String       @id @default(cuid())
+  name                String       @default("")
+  surname             String       @default("")
+  country             String?
+  city                String?
+  year                Int?
+  amountPaid          Decimal?     @db.Decimal(12, 2)
+  currency            String       @default("CHF")
+  paymentStatus       String       @default("UNPAID")
+  notes               String?
+  status              MemberStatus @default(PENDING)
+  isPublic            Boolean      @default(false)
+  publicVisibleAmount Boolean      @default(false)
+  createdAt           DateTime     @default(now())
+  updatedAt           DateTime     @updatedAt
+}
+
+model MembershipApplication {
+  id        String            @id @default(cuid())
+  fullName  String
+  email     String
+  phone     String?
+  city      String?
+  country   String?
+  message   String?
+  status    ApplicationStatus @default(NEW)
+  createdAt DateTime          @default(now())
+  updatedAt DateTime          @updatedAt
+}
+
+model BoardMember {
+  id          String   @id @default(cuid())
+  fullName    String
+  positionSq  String
+  positionDe  String
+  bioSq       String?
+  bioDe       String?
+  imageUrl    String?
+  sortOrder   Int      @default(0)
+  isPublished Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Event {
+  id          String   @id @default(cuid())
+  titleSq     String
+  titleDe     String
+  descriptionSq String
+  descriptionDe String
+  location    String
+  startsAt    DateTime
+  imageUrl    String?
+  isPublished Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model GalleryItem {
+  id          String   @id @default(cuid())
+  titleSq     String
+  titleDe     String
+  imageUrl    String
+  captionSq   String?
+  captionDe   String?
+  isPublished Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}

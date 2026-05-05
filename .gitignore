@@ -1,0 +1,8 @@
+.next
+node_modules
+.env
+.env*.local
+*.log
+prisma/dev.db
+tsconfig.tsbuildinfo
+.npm-cache

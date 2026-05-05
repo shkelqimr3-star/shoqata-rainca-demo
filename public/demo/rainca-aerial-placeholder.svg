@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" role="img" aria-label="Raince aerial placeholder">
+  <defs>
+    <linearGradient id="sky" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#9fc6c2"/>
+      <stop offset="0.48" stop-color="#4c956c"/>
+      <stop offset="1" stop-color="#1f5f4b"/>
+    </linearGradient>
+  </defs>
+  <rect width="1600" height="1000" fill="url(#sky)"/>
+  <path d="M0 640c250-115 430-114 615-31 162 73 314 83 492 3 205-92 344-95 493-18v406H0z" fill="#274f3c"/>
+  <path d="M0 728c300-77 482-43 694 34 218 79 523-78 906 1v237H0z" fill="#17382f"/>
+  <path d="M200 698l220-72 144 44-216 87zM738 652l298-96 230 76-296 112z" fill="#f4efe0" opacity=".72"/>
+  <path d="M265 672l74-24 49 16-74 28zM820 630l86-29 66 22-88 32zM1010 620l79-24 59 20-80 30z" fill="#b23a2f" opacity=".78"/>
+  <path d="M0 558c197-94 399-145 624-144 298 1 548 80 976 0v155c-384 82-650 36-951-17-256-45-457-37-649 66z" fill="#d8b064" opacity=".42"/>
+</svg>
