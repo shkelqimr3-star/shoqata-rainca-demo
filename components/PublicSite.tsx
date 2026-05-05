@@ -195,23 +195,23 @@ export function PublicSite({ data, lang, page = "home", saved = false }: PublicS
               <h3 className="text-2xl font-black text-ink">{tx(lang, "Statistika e anëtarësisë", "Mitgliederstatistik")}</h3>
               <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
                 {[
-                  ["2023/2024", "214"],
-                  ["2024/2025", "239"],
-                  ["2025/2026", "226"],
-                  [tx(lang, "Konfirmuar 2025", "Bestätigt 2025"), "83"]
-                ].map(([label, value]) => (
-                  <div key={label} className="rounded-lg bg-pine/5 p-4">
-                    <p className="text-sm font-black uppercase tracking-wide text-pine">{label}</p>
+                  ["2023", "214", tx(lang, "anëtarë", "Mitglieder")],
+                  ["2024", "239", tx(lang, "anëtarë", "Mitglieder")],
+                  ["2025", "226", tx(lang, "anëtarë", "Mitglieder")],
+                  ["2026", "83", tx(lang, "anëtarë deri tani", "Mitglieder bisher")]
+                ].map(([year, value, label]) => (
+                  <div key={year} className="rounded-lg bg-pine/5 p-4">
+                    <p className="text-sm font-black uppercase tracking-wide text-pine">{year}</p>
                     <p className="mt-2 text-3xl font-black text-ink">{value}</p>
-                    <p className="text-sm font-semibold text-ink/60">{tx(lang, "anëtarë", "Mitglieder")}</p>
+                    <p className="text-sm font-semibold text-ink/60">{label}</p>
                   </div>
                 ))}
               </div>
               <p className="mt-4 text-sm font-semibold leading-6 text-ink/62">
                 {tx(
                   lang,
-                  "Shënim: Shumat financiare përfundimtare llogariten sipas pagesave reale të regjistruara në raportin financiar.",
-                  "Hinweis: Die endgültigen Finanzbeträge werden anhand der tatsächlich erfassten Zahlungen im Finanzbericht berechnet."
+                  "Shënim: Për vitin 2026 janë llogaritur vetëm pagesat e regjistruara deri tani sipas listës së fundit të anëtarëve.",
+                  "Hinweis: Für das Jahr 2026 wurden nur die bisher erfassten Zahlungen gemäß der aktuellen Mitgliederliste berücksichtigt."
                 )}
               </p>
             </div>
