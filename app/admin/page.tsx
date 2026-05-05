@@ -2,6 +2,7 @@ import { isAdmin } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { ConfirmDeleteForm } from "@/components/ConfirmDeleteForm";
 import { ImageUploadField } from "@/components/ImageUploadField";
+import { MemberCsvImport } from "@/components/MemberCsvImport";
 
 export const dynamic = "force-dynamic";
 
@@ -183,6 +184,7 @@ export default async function AdminPage({
                 </p>
                 <button className="rounded-md bg-pine px-5 py-3 font-black text-white lg:col-span-3" type="submit">Shto anëtar</button>
               </form>
+              <MemberCsvImport />
               <div className="mt-5 grid gap-3">
                 {data.members.map((member) => (
                   <div key={member.id} className="rounded-md border border-ink/10 bg-ink/[0.03] p-4">
