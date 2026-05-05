@@ -1,5 +1,6 @@
 import { isAdmin } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { ConfirmDeleteForm } from "@/components/ConfirmDeleteForm";
 import { ImageUploadField } from "@/components/ImageUploadField";
 
 export const dynamic = "force-dynamic";
@@ -142,7 +143,7 @@ export default async function AdminPage({
                 <label className="flex items-center gap-2 font-bold"><input name="isPublished" type="checkbox" defaultChecked /> Publiko</label>
                 <button className="rounded-md bg-pine px-5 py-3 font-black text-white lg:col-span-2" type="submit">Shto raport</button>
               </form>
-              <ItemList items={data.reports.map((item) => ({ id: item.id, title: item.title, meta: String(item.year), model: "report" }))} />
+              <ReportsEditor reports={data.reports} />
             </AdminSection>
 
             <AdminSection title="Anëtarët dhe privatësia">
@@ -343,6 +344,74 @@ function Textarea({ label, name, required = false }: { label: string; name: stri
       <textarea className="admin-input mt-1" name={name} rows={4} required={required} />
     </label>
   );
+}
+
+type AdminReport = NonNullable<Awaited<ReturnType<typeof getAdminData>>>["reports"][number];
+
+function ReportsEditor({ reports }: { reports: AdminReport[] }) {
+  if (!reports.length) return <p className="mt-5 text-sm font-bold text-ink/55">Ende nuk ka raporte financiare.</p>;
+
+  return (
+    <div className="mt-6 space-y-4">
+      <h3 className="text-lg font-black text-ink">Raportet ekzistuese</h3>
+      {reports.map((report) => (
+        <article key={report.id} className="rounded-lg border border-ink/10 bg-ink/[0.03] p-4">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <h4 className="font-black text-ink">{report.year} · {report.title}</h4>
+              <p className="text-sm font-semibold text-ink/60">
+                Të hyrat: {moneyText(report.income)} CHF · Shpenzimet: {moneyText(report.expenses)} CHF · {report.isPublished ? "Publikuar" : "I fshehur"}
+              </p>
+            </div>
+            <div className="flex gap-2">
+              <ConfirmDeleteForm id={report.id} model="report" label="Fshi" message={`A jeni të sigurt që doni ta fshini raportin ${report.year}?`} />
+            </div>
+          </div>
+
+          <details className="mt-4">
+            <summary className="cursor-pointer rounded-md bg-ink px-4 py-3 text-sm font-black text-white">Edit</summary>
+            <form action="/api/admin/report-update" method="post" encType="multipart/form-data" className="mt-4 grid gap-4 lg:grid-cols-2">
+              <input type="hidden" name="id" value={report.id} />
+              <YearField label="Viti" name="year" defaultValue={String(report.year)} required />
+              <Field label="Titulli" name="title" defaultValue={report.title} required />
+              <Field label="Të hyrat CHF" name="income" type="number" defaultValue={moneyText(report.income)} required />
+              <Field label="Shpenzimet CHF" name="expenses" type="number" defaultValue={moneyText(report.expenses)} required />
+              <Field label="PDF URL" name="pdfUrl" defaultValue={report.pdfUrl || ""} />
+              <label>
+                <span className="admin-label">Ngarko PDF të ri</span>
+                <input className="admin-input mt-1" name="pdf" type="file" accept="application/pdf" />
+              </label>
+              <label className="lg:col-span-2">
+                <span className="admin-label">Kategoritë, një për rresht: Emri: shuma</span>
+                <textarea className="admin-input mt-1" name="categories" rows={5} defaultValue={categoriesText(report.categories)} />
+              </label>
+              <label className="flex items-center gap-2 font-bold"><input name="isPublished" type="checkbox" defaultChecked={report.isPublished} /> Publiko</label>
+              <button className="rounded-md bg-pine px-5 py-3 font-black text-white lg:col-span-2" type="submit">Ruaj ndryshimet</button>
+            </form>
+          </details>
+        </article>
+      ))}
+    </div>
+  );
+}
+
+function moneyText(value: unknown) {
+  if (typeof value === "number") return String(value);
+  if (typeof value === "string") return value;
+  if (value && typeof value === "object" && "toString" in value) return value.toString();
+  return "0";
+}
+
+function categoriesText(value: unknown) {
+  if (!Array.isArray(value)) return "";
+  return value
+    .map((item) => {
+      if (!item || typeof item !== "object") return "";
+      const category = item as { label?: unknown; amount?: unknown };
+      return `${String(category.label ?? "Kategori")}: ${String(category.amount ?? 0)}`;
+    })
+    .filter(Boolean)
+    .join("\n");
 }
 
 function ItemList({ items }: { items: Array<{ id: string; title: string; meta: string; model: string }> }) {

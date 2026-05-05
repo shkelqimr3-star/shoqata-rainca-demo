@@ -22,6 +22,16 @@ function boolValue(formData: FormData, key: string) {
   return formData.get(key) === "on";
 }
 
+function reportCategories(formData: FormData) {
+  return text(formData, "categories")
+    .split("\n")
+    .filter(Boolean)
+    .map((line) => {
+      const [label, amount] = line.split(":");
+      return { label: (label || "Kategori").trim(), amount: Number(amount || 0) };
+    });
+}
+
 async function fileBytes(formData: FormData, key: string) {
   const file = formData.get(key);
   if (!(file instanceof File) || file.size === 0) return null;
@@ -125,17 +135,28 @@ export async function POST(request: Request, { params }: { params: Promise<{ act
         title: text(formData, "title"),
         income: text(formData, "income") || "0",
         expenses: text(formData, "expenses") || "0",
-        categories: text(formData, "categories")
-          .split("\n")
-          .filter(Boolean)
-          .map((line) => {
-            const [label, amount] = line.split(":");
-            return { label: (label || "Kategori").trim(), amount: Number(amount || 0) };
-          }),
+        categories: reportCategories(formData),
         pdfUrl: optionalText(formData, "pdfUrl"),
         pdfName: pdf?.name,
         pdfBytes: pdf?.bytes,
         isPublished: boolValue(formData, "isPublished")
+      }
+    });
+  }
+
+  if (action === "report-update") {
+    const pdf = await fileBytes(formData, "pdf");
+    await prisma.financialReport.update({
+      where: { id: text(formData, "id") },
+      data: {
+        year: intValue(formData, "year", new Date().getFullYear()),
+        title: text(formData, "title"),
+        income: text(formData, "income") || "0",
+        expenses: text(formData, "expenses") || "0",
+        categories: reportCategories(formData),
+        pdfUrl: optionalText(formData, "pdfUrl"),
+        isPublished: boolValue(formData, "isPublished"),
+        ...(pdf ? { pdfName: pdf.name, pdfBytes: pdf.bytes } : {})
       }
     });
   }
