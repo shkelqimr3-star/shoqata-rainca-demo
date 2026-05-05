@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { FinancialChart } from "@/components/Charts";
+import { FinancialDashboard } from "@/components/Charts";
 import { CopyIbanButton } from "@/components/CopyIbanButton";
 import { Logo } from "@/components/Logo";
 import { MembersDirectory } from "@/components/MembersDirectory";
@@ -168,32 +168,22 @@ export function PublicSite({ data, lang, page = "home", saved = false }: PublicS
         {(showAll || active === "reports") && latestReport && (
           <section className="py-10">
             <SectionTitle eyebrow={tx(lang, "Besim përmes të dhënave", "Vertrauen durch Zahlen")} title={t.reports} />
-            <div className="space-y-5">
-              {data.reports.map((report) => (
-                <article key={report.id} className="rounded-lg border border-ink/10 bg-white p-5 shadow-sm">
-                  <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
-                    <div>
-                      <h3 className="text-2xl font-black">{report.title}</h3>
-                      <p className="text-sm font-bold text-ink/55">{report.year}</p>
-                    </div>
-                    {report.hasPdf || report.pdfUrl ? (
-                      <Link href={report.pdfUrl || "#"} className="rounded-md bg-ink px-4 py-2 text-sm font-black text-white">
-                        {t.download}
-                      </Link>
-                    ) : (
-                      <span className="rounded-md bg-ink/5 px-4 py-2 text-sm font-bold text-ink/55">{t.noPdf}</span>
-                    )}
-                  </div>
-                  <FinancialChart
-                    income={report.income}
-                    expenses={report.expenses}
-                    balance={report.balance}
-                    categories={report.categories}
-                    labels={{ income: t.income, expenses: t.expenses, balance: t.balance, categories: t.categories }}
-                  />
-                </article>
-              ))}
-            </div>
+            <p className="mb-6 max-w-3xl text-lg font-semibold leading-8 text-ink/70">
+              Raportet financiare publikohen për transparencë ndaj anëtarëve, donatorëve dhe komunitetit të Raincës.
+            </p>
+            <FinancialDashboard
+              reports={data.reports}
+              labels={{
+                income: t.income,
+                expenses: t.expenses,
+                balance: t.balance,
+                download: t.download,
+                noPdf: t.noPdf,
+                yearlyBalance: tx(lang, "Bilanci sipas viteve", "Saldo nach Jahr"),
+                incomeVsExpenses: tx(lang, "Të hyrat kundrejt shpenzimeve", "Einnahmen gegenüber Ausgaben"),
+                categoryExpenses: tx(lang, "Shpenzimet sipas kategorive", "Ausgaben nach Kategorien")
+              }}
+            />
           </section>
         )}
 
