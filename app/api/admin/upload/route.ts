@@ -1,6 +1,6 @@
 import { randomBytes } from "crypto";
-import { mkdir, writeFile } from "fs/promises";
 import path from "path";
+import { put } from "@vercel/blob";
 import { NextResponse } from "next/server";
 import { isAdmin } from "@/lib/auth";
 
@@ -27,6 +27,10 @@ export async function POST(request: Request) {
     return new NextResponse("Unauthorized", { status: 401 });
   }
 
+  if (!process.env.BLOB_READ_WRITE_TOKEN) {
+    return new NextResponse("Blob storage is not configured", { status: 500 });
+  }
+
   const formData = await request.formData();
   const file = formData.get("file");
 
@@ -40,11 +44,11 @@ export async function POST(request: Request) {
   }
 
   const fileName = `${safeBaseName(file.name)}-${randomBytes(5).toString("hex")}${extension}`;
-  const uploadsDir = path.join(process.cwd(), "public", "uploads");
-  const targetPath = path.join(uploadsDir, fileName);
+  const blob = await put(`rainca/${fileName}`, file, {
+    access: "public",
+    contentType: file.type,
+    token: process.env.BLOB_READ_WRITE_TOKEN
+  });
 
-  await mkdir(uploadsDir, { recursive: true });
-  await writeFile(targetPath, Buffer.from(await file.arrayBuffer()));
-
-  return NextResponse.json({ url: `/uploads/${fileName}` });
+  return NextResponse.json({ url: blob.url });
 }
