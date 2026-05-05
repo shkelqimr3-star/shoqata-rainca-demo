@@ -5,8 +5,8 @@ export const demoData: PublicData = {
     associationName: "Shoqata Rainca",
     officialEmail: "info@shoqata-rainca.ch",
     domain: "shoqata-rainca.ch",
-    heroImageUrl: "/demo/rainca-aerial-placeholder.svg",
-    qrImageUrl: "/demo/qr-payment-placeholder.svg",
+    heroImageUrl: "/uploads/rainca-aerial.jpg",
+    qrImageUrl: "/uploads/qr-payment.png",
     iban: "CH00 0000 0000 0000 0000 0",
     bankName: "E editueshme nga administrimi",
     paymentNote: "Të dhënat e pagesës janë shembull për demo dhe duhet të verifikohen nga kryesia.",
@@ -151,7 +151,7 @@ export const demoData: PublicData = {
       id: "demo-gallery-1",
       titleSq: "Raincë nga ajri",
       titleDe: "Raincë aus der Luft",
-      imageUrl: "/demo/rainca-aerial-placeholder.svg",
+      imageUrl: "/uploads/rainca-aerial.jpg",
       captionSq: "Foto e ngarkueshme nga administrimi.",
       captionDe: "Bild im Adminbereich austauschbar."
     }

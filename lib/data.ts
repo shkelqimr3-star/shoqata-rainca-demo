@@ -14,8 +14,8 @@ function uploadedAsset(preferred: string, fallback: string) {
 }
 
 function demoWithUploadedAssets(): PublicData {
-  const heroImageUrl = uploadedAsset("/uploads/rainca-aerial.jpg", demoData.settings.heroImageUrl);
-  const qrImageUrl = uploadedAsset("/uploads/qr-payment.png", demoData.settings.qrImageUrl);
+  const heroImageUrl = "/uploads/rainca-aerial.jpg";
+  const qrImageUrl = "/uploads/qr-payment.png";
   return {
     ...demoData,
     settings: {

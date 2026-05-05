@@ -1,5 +1,6 @@
 import { isAdmin } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { ImageUploadField } from "@/components/ImageUploadField";
 
 export const dynamic = "force-dynamic";
 
@@ -86,9 +87,9 @@ export default async function AdminPage({
                 <Field label="Emri i shoqatës" name="associationName" defaultValue={data.settings?.associationName || "Shoqata Rainca"} />
                 <Field label="Email zyrtar" name="officialEmail" defaultValue={data.settings?.officialEmail || "info@shoqata-rainca.ch"} />
                 <Field label="Domain" name="domain" defaultValue={data.settings?.domain || "shoqata-rainca.ch"} />
-                <Field label="Logo URL" name="logoUrl" defaultValue={data.settings?.logoUrl || ""} placeholder="/uploads/logo.png" />
-                <Field label="Hero image URL" name="heroImageUrl" defaultValue={data.settings?.heroImageUrl || ""} placeholder="/uploads/rainca-aerial.jpg" />
-                <Field label="QR image URL" name="qrImageUrl" defaultValue={data.settings?.qrImageUrl || ""} placeholder="/uploads/qr-payment.png" />
+                <ImageUploadField label="Logo URL" name="logoUrl" defaultValue={data.settings?.logoUrl || ""} placeholder="/uploads/logo.png" />
+                <ImageUploadField label="Hero image URL" name="heroImageUrl" defaultValue={data.settings?.heroImageUrl || ""} placeholder="/uploads/rainca-aerial.jpg" />
+                <ImageUploadField label="QR image URL" name="qrImageUrl" defaultValue={data.settings?.qrImageUrl || ""} placeholder="/uploads/qr-payment.png" />
                 <Field label="IBAN publik" name="iban" defaultValue={data.settings?.iban || ""} />
                 <Field label="Banka / përfituesi publik" name="bankName" defaultValue={data.settings?.bankName || ""} />
                 <Field label="Adresa kontaktuese" name="contactAddress" defaultValue={data.settings?.contactAddress || ""} />
@@ -114,7 +115,7 @@ export default async function AdminPage({
                 <Field label="Status" name="status" required />
                 <Field label="Viti" name="year" type="number" defaultValue={String(new Date().getFullYear())} required />
                 <Field label="Buxheti CHF" name="budget" type="number" />
-                <Field label="Image URL" name="imageUrl" />
+                <ImageUploadField label="Image URL" name="imageUrl" />
                 <label className="flex items-center gap-2 pt-6 font-bold"><input name="isPublished" type="checkbox" defaultChecked /> Publiko</label>
                 <Textarea label="Përshkrim shqip" name="summarySq" required />
                 <Textarea label="Beschreibung Deutsch" name="summaryDe" required />
@@ -231,7 +232,7 @@ export default async function AdminPage({
                 <Field label="Renditja" name="sortOrder" type="number" defaultValue="0" />
                 <Field label="Pozita shqip" name="positionSq" required />
                 <Field label="Position Deutsch" name="positionDe" required />
-                <Field label="Image URL" name="imageUrl" />
+                <ImageUploadField label="Image URL" name="imageUrl" />
                 <label className="flex items-center gap-2 pt-6 font-bold"><input name="isPublished" type="checkbox" defaultChecked /> Publiko</label>
                 <Textarea label="Bio shqip" name="bioSq" />
                 <Textarea label="Bio Deutsch" name="bioDe" />
@@ -246,7 +247,7 @@ export default async function AdminPage({
                 <Field label="Titel Deutsch" name="titleDe" required />
                 <Field label="Lokacioni" name="location" required />
                 <Field label="Data dhe ora" name="startsAt" type="datetime-local" required />
-                <Field label="Image URL" name="imageUrl" />
+                <ImageUploadField label="Image URL" name="imageUrl" />
                 <label className="flex items-center gap-2 pt-6 font-bold"><input name="isPublished" type="checkbox" defaultChecked /> Publiko</label>
                 <Textarea label="Përshkrim shqip" name="descriptionSq" required />
                 <Textarea label="Beschreibung Deutsch" name="descriptionDe" required />
@@ -259,7 +260,7 @@ export default async function AdminPage({
               <form action="/api/admin/gallery" method="post" className="grid gap-4 lg:grid-cols-2">
                 <Field label="Titulli shqip" name="titleSq" required />
                 <Field label="Titel Deutsch" name="titleDe" required />
-                <Field label="Image URL" name="imageUrl" required />
+                <ImageUploadField label="Image URL" name="imageUrl" required />
                 <label className="flex items-center gap-2 pt-6 font-bold"><input name="isPublished" type="checkbox" defaultChecked /> Publiko</label>
                 <Textarea label="Caption shqip" name="captionSq" />
                 <Textarea label="Caption Deutsch" name="captionDe" />
