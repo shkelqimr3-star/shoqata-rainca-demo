@@ -1,17 +1,17 @@
 import type { Lang } from "@/lib/types";
 
 export const navItems = [
-  { href: "/", sq: "Ballina", de: "Start" },
-  { href: "/rreth-shoqates", sq: "Rreth Shoqatës", de: "Über uns" },
+  { href: "/", sq: "Ballina", de: "Startseite" },
+  { href: "/eventet", sq: "Eventet", de: "Veranstaltungen" },
+  { href: "/galeria", sq: "Galeria", de: "Galerie" },
   { href: "/projekte", sq: "Projektet", de: "Projekte" },
   { href: "/raportet-financiare", sq: "Raportet financiare", de: "Finanzberichte" },
   { href: "/anetaret", sq: "Anëtarët", de: "Mitglieder" },
   { href: "/behu-anetar", sq: "Bëhu anëtar", de: "Mitglied werden" },
   { href: "/donacione", sq: "Donacione", de: "Spenden" },
   { href: "/kryesia", sq: "Kryesia", de: "Vorstand" },
-  { href: "/eventet", sq: "Eventet", de: "Veranstaltungen" },
-  { href: "/galeria", sq: "Galeria", de: "Galerie" },
-  { href: "/statuti", sq: "Statuti", de: "Statuten" },
+  { href: "/statuti", sq: "Statuti", de: "Statut" },
+  { href: "/rreth-shoqates", sq: "Rreth Shoqatës", de: "Über uns" },
   { href: "/kontakt", sq: "Kontakt", de: "Kontakt" }
 ];
 
@@ -51,6 +51,7 @@ export const copy = {
     qrNote: "QR dhe të dhënat bankare janë të editueshme nga administrimi.",
     applyTitle: "Aplikim për anëtarësi",
     applyText: "Plotësoni aplikimin për anëtarësi. Pas pranimit, shoqata ju kontakton për konfirmim dhe pagesë.",
+    membershipFeeText: "Anëtarësia vjetore është 100 CHF për anëtarët në Zvicër, 100 EUR për anëtarët në Gjermani dhe 80 EUR për anëtarët jashtë Zvicrës/Gjermanisë, sipas vendimit të Shoqatës.",
     submit: "Dërgo",
     saved: "Faleminderit për aplikimin. Shoqata Rainca do t’ju kontaktojë për konfirmim dhe pagesë.",
     admin: "Admin"
@@ -90,6 +91,7 @@ export const copy = {
     qrNote: "QR und Bankdaten sind im Adminbereich bearbeitbar.",
     applyTitle: "Mitgliedsantrag",
     applyText: "Füllen Sie den Mitgliedsantrag aus. Nach Eingang kontaktiert Sie der Verein zur Bestätigung und Zahlung.",
+    membershipFeeText: "Der jährliche Mitgliederbeitrag beträgt 100 CHF für Mitglieder in der Schweiz, 100 EUR für Mitglieder in Deutschland und 80 EUR für Mitglieder außerhalb der Schweiz/Deutschland, gemäß Beschluss des Vereins.",
     submit: "Senden",
     saved: "Danke für den Antrag. Shoqata Rainca wird Sie zur Bestätigung und Zahlung kontaktieren.",
     admin: "Admin"

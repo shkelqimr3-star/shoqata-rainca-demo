@@ -112,7 +112,7 @@ export function PublicSite({ data, lang, page = "home", saved = false }: PublicS
       )}
 
       <main className="mx-auto max-w-7xl px-4 py-12">
-        {(showAll || active === "about") && (
+        {active === "about" && (
           <section className="grid gap-8 py-10 lg:grid-cols-[0.85fr_1.15fr]">
             <div>
               <p className="text-sm font-black uppercase tracking-wide text-pine">{tx(lang, "Rreth Shoqatës", "Über uns")}</p>
@@ -127,6 +127,50 @@ export function PublicSite({ data, lang, page = "home", saved = false }: PublicS
               <div className="rounded-lg border border-pine/20 bg-pine p-6 text-white sm:col-span-3">
                 <p className="text-lg font-semibold leading-8">{t.missionText}</p>
               </div>
+            </div>
+          </section>
+        )}
+
+        {showAll && (
+          <section className="py-10">
+            <SectionTitle eyebrow={tx(lang, "Kalendari", "Kalender")} title={t.events} />
+            <div className="grid gap-5 md:grid-cols-2">
+              {data.events.map((event) => (
+                <article key={event.id} className="overflow-hidden rounded-lg border border-ink/10 bg-white shadow-sm">
+                  {event.imageUrl && (
+                    <div className="h-44 bg-skywash">
+                      <AssetImage src={event.imageUrl} alt={tx(lang, event.titleSq, event.titleDe)} className="h-full w-full" />
+                    </div>
+                  )}
+                  <div className="p-5">
+                    <p className="text-sm font-black text-gold">
+                      {new Intl.DateTimeFormat(lang === "de" ? "de-CH" : "sq-AL", { dateStyle: "full", timeStyle: "short" }).format(new Date(event.startsAt))}
+                    </p>
+                    <h3 className="mt-2 text-xl font-black">{tx(lang, event.titleSq, event.titleDe)}</h3>
+                    <p className="mt-3 leading-7 text-ink/68">{tx(lang, event.descriptionSq, event.descriptionDe)}</p>
+                    <p className="mt-4 font-bold text-ink/64">{event.location}</p>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {showAll && (
+          <section className="py-10">
+            <SectionTitle eyebrow={tx(lang, "Pamje", "Einblicke")} title={t.gallery} />
+            <div className="grid gap-5 md:grid-cols-3">
+              {data.gallery.map((item) => (
+                <article key={item.id} className="overflow-hidden rounded-lg border border-ink/10 bg-white shadow-sm">
+                  <div className="relative h-56 bg-skywash">
+                    <AssetImage src={item.imageUrl} alt={tx(lang, item.titleSq, item.titleDe)} className="h-full w-full" />
+                  </div>
+                  <div className="p-4">
+                    <h3 className="font-black">{tx(lang, item.titleSq, item.titleDe)}</h3>
+                    <p className="mt-1 text-sm font-semibold text-ink/60">{tx(lang, item.captionSq || "", item.captionDe || "")}</p>
+                  </div>
+                </article>
+              ))}
             </div>
           </section>
         )}
@@ -186,16 +230,22 @@ export function PublicSite({ data, lang, page = "home", saved = false }: PublicS
             <div className="rounded-lg border border-ink/10 bg-white p-6 shadow-sm">
               <SectionTitle eyebrow={tx(lang, "Komuniteti", "Gemeinschaft")} title={t.applyTitle} compact />
               <p className="mb-5 leading-7 text-ink/70">{t.applyText}</p>
-              <div className="mb-5 grid gap-3 rounded-lg bg-pine/5 p-4 sm:grid-cols-2">
+              <p className="mb-5 rounded-lg bg-pine/5 p-4 font-semibold leading-7 text-ink/72">{t.membershipFeeText}</p>
+              <div className="mb-5 grid gap-3 rounded-lg bg-ink/[0.03] p-4 sm:grid-cols-3">
                 <div>
                   <p className="text-xs font-black uppercase tracking-wide text-pine">{tx(lang, "Zvicër", "Schweiz")}</p>
                   <p className="mt-1 text-lg font-black text-ink">100 CHF</p>
-                  <p className="text-sm font-semibold text-ink/60">{tx(lang, "Anëtarësi vjetore", "Jahresmitgliedschaft")}</p>
+                  <p className="text-sm font-semibold text-ink/60">{tx(lang, "në vit", "pro Jahr")}</p>
                 </div>
                 <div>
-                  <p className="text-xs font-black uppercase tracking-wide text-pine">{tx(lang, "Jashtë Zvicrës", "Außerhalb der Schweiz")}</p>
+                  <p className="text-xs font-black uppercase tracking-wide text-pine">{tx(lang, "Gjermani", "Deutschland")}</p>
+                  <p className="mt-1 text-lg font-black text-ink">100 EUR</p>
+                  <p className="text-sm font-semibold text-ink/60">{tx(lang, "në vit", "pro Jahr")}</p>
+                </div>
+                <div>
+                  <p className="text-xs font-black uppercase tracking-wide text-pine">{tx(lang, "Vende tjera", "Andere Länder")}</p>
                   <p className="mt-1 text-lg font-black text-ink">80 EUR</p>
-                  <p className="text-sm font-semibold text-ink/60">{tx(lang, "Konvertohet në CHF", "Wird in CHF umgerechnet")}</p>
+                  <p className="text-sm font-semibold text-ink/60">{tx(lang, "sipas vendimit", "gemäß Beschluss")}</p>
                 </div>
               </div>
               {saved && <p className="mb-5 rounded-md bg-pine/10 px-4 py-3 font-bold text-pine">{t.saved}</p>}
@@ -226,6 +276,7 @@ export function PublicSite({ data, lang, page = "home", saved = false }: PublicS
                   <p><span className="font-black text-ink">BIC:</span> POFICHBEXXX</p>
                 </div>
                 <CopyIbanButton iban={officialIban} label={tx(lang, "Kopjo IBAN", "IBAN kopieren")} copiedLabel={tx(lang, "IBAN u kopjua.", "IBAN kopiert.")} />
+                <p>{t.membershipFeeText}</p>
                 <p>{tx(lang, "Ju lutemi shënoni emrin dhe qëllimin e pagesës.", "Bitte Namen und Zahlungszweck angeben.")}</p>
               </div>
             </div>
@@ -254,7 +305,7 @@ export function PublicSite({ data, lang, page = "home", saved = false }: PublicS
           </section>
         )}
 
-        {(showAll || active === "events") && (
+        {active === "events" && (
           <section className="py-10">
             <SectionTitle eyebrow={tx(lang, "Kalendari", "Kalender")} title={t.events} />
             <div className="grid gap-5 md:grid-cols-2">
@@ -279,7 +330,7 @@ export function PublicSite({ data, lang, page = "home", saved = false }: PublicS
           </section>
         )}
 
-        {(showAll || active === "gallery") && (
+        {active === "gallery" && (
           <section className="py-10">
             <SectionTitle eyebrow={tx(lang, "Pamje", "Einblicke")} title={t.gallery} />
             <div className="grid gap-5 md:grid-cols-3">
@@ -294,6 +345,25 @@ export function PublicSite({ data, lang, page = "home", saved = false }: PublicS
                   </div>
                 </article>
               ))}
+            </div>
+          </section>
+        )}
+
+        {showAll && (
+          <section className="grid gap-8 py-10 lg:grid-cols-[0.85fr_1.15fr]">
+            <div>
+              <p className="text-sm font-black uppercase tracking-wide text-pine">{tx(lang, "Rreth Shoqatës", "Über uns")}</p>
+              <h2 className="mt-3 text-3xl font-black text-ink sm:text-4xl">{t.missionTitle}</h2>
+            </div>
+            <div className="grid gap-4 sm:grid-cols-3">
+              {[t.founded, t.seat, t.neutral].map((item) => (
+                <div key={item} className="rounded-lg border border-ink/10 bg-white p-5 shadow-sm">
+                  <p className="font-bold leading-7 text-ink/76">{item}</p>
+                </div>
+              ))}
+              <div className="rounded-lg border border-pine/20 bg-pine p-6 text-white sm:col-span-3">
+                <p className="text-lg font-semibold leading-8">{t.missionText}</p>
+              </div>
             </div>
           </section>
         )}
