@@ -231,7 +231,7 @@ export function PublicSite({ data, lang, page = "home", saved = false }: PublicS
               <SectionTitle eyebrow={tx(lang, "Komuniteti", "Gemeinschaft")} title={t.applyTitle} compact />
               <p className="mb-5 leading-7 text-ink/70">{t.applyText}</p>
               <p className="mb-5 rounded-lg bg-pine/5 p-4 font-semibold leading-7 text-ink/72">{t.membershipFeeText}</p>
-              <div className="mb-5 grid gap-3 rounded-lg bg-ink/[0.03] p-4 sm:grid-cols-3">
+              <div className="mb-5 grid gap-3 rounded-lg bg-ink/[0.03] p-4 sm:grid-cols-2">
                 <div>
                   <p className="text-xs font-black uppercase tracking-wide text-pine">{tx(lang, "Zvicër", "Schweiz")}</p>
                   <p className="mt-1 text-lg font-black text-ink">100 CHF</p>
@@ -241,11 +241,6 @@ export function PublicSite({ data, lang, page = "home", saved = false }: PublicS
                   <p className="text-xs font-black uppercase tracking-wide text-pine">{tx(lang, "Gjermani", "Deutschland")}</p>
                   <p className="mt-1 text-lg font-black text-ink">100 EUR</p>
                   <p className="text-sm font-semibold text-ink/60">{tx(lang, "në vit", "pro Jahr")}</p>
-                </div>
-                <div>
-                  <p className="text-xs font-black uppercase tracking-wide text-pine">{tx(lang, "Vende tjera", "Andere Länder")}</p>
-                  <p className="mt-1 text-lg font-black text-ink">80 EUR</p>
-                  <p className="text-sm font-semibold text-ink/60">{tx(lang, "sipas vendimit", "gemäß Beschluss")}</p>
                 </div>
               </div>
               {saved && <p className="mb-5 rounded-md bg-pine/10 px-4 py-3 font-bold text-pine">{t.saved}</p>}

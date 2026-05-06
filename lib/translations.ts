@@ -51,7 +51,7 @@ export const copy = {
     qrNote: "QR dhe të dhënat bankare janë të editueshme nga administrimi.",
     applyTitle: "Aplikim për anëtarësi",
     applyText: "Plotësoni aplikimin për anëtarësi. Pas pranimit, shoqata ju kontakton për konfirmim dhe pagesë.",
-    membershipFeeText: "Anëtarësia vjetore është 100 CHF për anëtarët në Zvicër, 100 EUR për anëtarët në Gjermani dhe 80 EUR për anëtarët jashtë Zvicrës/Gjermanisë, sipas vendimit të Shoqatës.",
+    membershipFeeText: "Anëtarësia vjetore është 100 CHF për anëtarët në Zvicër dhe 100 EUR për anëtarët në Gjermani, sipas vendimit të Shoqatës.",
     submit: "Dërgo",
     saved: "Faleminderit për aplikimin. Shoqata Rainca do t’ju kontaktojë për konfirmim dhe pagesë.",
     admin: "Admin"
@@ -91,7 +91,7 @@ export const copy = {
     qrNote: "QR und Bankdaten sind im Adminbereich bearbeitbar.",
     applyTitle: "Mitgliedsantrag",
     applyText: "Füllen Sie den Mitgliedsantrag aus. Nach Eingang kontaktiert Sie der Verein zur Bestätigung und Zahlung.",
-    membershipFeeText: "Der jährliche Mitgliederbeitrag beträgt 100 CHF für Mitglieder in der Schweiz, 100 EUR für Mitglieder in Deutschland und 80 EUR für Mitglieder außerhalb der Schweiz/Deutschland, gemäß Beschluss des Vereins.",
+    membershipFeeText: "Der jährliche Mitgliederbeitrag beträgt 100 CHF für Mitglieder in der Schweiz und 100 EUR für Mitglieder in Deutschland, gemäß Beschluss des Vereins.",
     submit: "Senden",
     saved: "Danke für den Antrag. Shoqata Rainca wird Sie zur Bestätigung und Zahlung kontaktieren.",
     admin: "Admin"
