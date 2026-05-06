@@ -58,9 +58,10 @@ export async function getPublicData(): Promise<PublicData> {
   }
 
   try {
-    const [settings, projects, reports, members, board, events, gallery] = await Promise.all([
+    const [settings, projects, membershipStats, reports, members, board, events, gallery] = await Promise.all([
       prisma.siteSettings.findFirst({ orderBy: { updatedAt: "desc" } }),
       prisma.project.findMany({ where: { isPublished: true }, orderBy: [{ year: "desc" }, { updatedAt: "desc" }] }),
+      prisma.membershipStatistic.findMany({ where: { isPublished: true }, orderBy: [{ sortOrder: "asc" }, { year: "asc" }] }),
       prisma.financialReport.findMany({ where: { isPublished: true }, orderBy: { year: "desc" } }),
       prisma.member.findMany({
         where: { isPublic: true },
@@ -92,6 +93,18 @@ export async function getPublicData(): Promise<PublicData> {
             budget: project.budget ? money(project.budget) : null
           }))
         : demoData.projects,
+      membershipStats: membershipStats.length
+        ? membershipStats.map((stat) => ({
+            id: stat.id,
+            year: stat.year,
+            memberCount: stat.memberCount,
+            status: stat.status,
+            dateUpdated: stat.dateUpdated?.toISOString() ?? null,
+            noteSq: stat.noteSq,
+            noteDe: stat.noteDe,
+            sortOrder: stat.sortOrder
+          }))
+        : demoData.membershipStats,
       reports: reports.length
         ? reports.map((report) => ({
             id: report.id,

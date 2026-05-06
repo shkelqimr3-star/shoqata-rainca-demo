@@ -51,6 +51,48 @@ export const demoData: PublicData = {
       imageUrl: "/demo/project-health.svg"
     }
   ],
+  membershipStats: [
+    {
+      id: "demo-stat-2023",
+      year: 2023,
+      memberCount: 214,
+      status: "closed",
+      dateUpdated: null,
+      noteSq: null,
+      noteDe: null,
+      sortOrder: 2023
+    },
+    {
+      id: "demo-stat-2024",
+      year: 2024,
+      memberCount: 239,
+      status: "closed",
+      dateUpdated: null,
+      noteSq: null,
+      noteDe: null,
+      sortOrder: 2024
+    },
+    {
+      id: "demo-stat-2025",
+      year: 2025,
+      memberCount: 226,
+      status: "closed",
+      dateUpdated: null,
+      noteSq: null,
+      noteDe: null,
+      sortOrder: 2025
+    },
+    {
+      id: "demo-stat-2026",
+      year: 2026,
+      memberCount: 93,
+      status: "in_progress",
+      dateUpdated: "2026-05-05T00:00:00.000Z",
+      noteSq: "Për vitin 2026 janë llogaritur vetëm pagesat e regjistruara deri më 05.05.2026.",
+      noteDe: "Für das Jahr 2026 wurden nur die bis zum 05.05.2026 erfassten Zahlungen berücksichtigt.",
+      sortOrder: 2026
+    }
+  ],
   reports: [
     {
       id: "demo-2025",

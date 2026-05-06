@@ -6,12 +6,38 @@ import { MemberCsvImport } from "@/components/MemberCsvImport";
 
 export const dynamic = "force-dynamic";
 
+const defaultMembershipStats = [
+  { year: 2023, memberCount: 214, status: "closed", dateUpdated: null, noteSq: null, noteDe: null, sortOrder: 2023, isPublished: true },
+  { year: 2024, memberCount: 239, status: "closed", dateUpdated: null, noteSq: null, noteDe: null, sortOrder: 2024, isPublished: true },
+  { year: 2025, memberCount: 226, status: "closed", dateUpdated: null, noteSq: null, noteDe: null, sortOrder: 2025, isPublished: true },
+  {
+    year: 2026,
+    memberCount: 93,
+    status: "in_progress",
+    dateUpdated: new Date("2026-05-05T00:00:00.000Z"),
+    noteSq: "Për vitin 2026 janë llogaritur vetëm pagesat e regjistruara deri më 05.05.2026.",
+    noteDe: "Für das Jahr 2026 wurden nur die bis zum 05.05.2026 erfassten Zahlungen berücksichtigt.",
+    sortOrder: 2026,
+    isPublished: true
+  }
+];
+
+async function ensureMembershipStats() {
+  const count = await prisma.membershipStatistic.count();
+  if (count === 0) {
+    await prisma.membershipStatistic.createMany({ data: defaultMembershipStats });
+  }
+}
+
 async function getAdminData() {
   if (!process.env.DATABASE_URL) return null;
 
-  const [settings, projects, reports, members, applications, board, events, gallery] = await Promise.all([
+  await ensureMembershipStats();
+
+  const [settings, projects, membershipStats, reports, members, applications, board, events, gallery] = await Promise.all([
     prisma.siteSettings.findFirst({ orderBy: { updatedAt: "desc" } }),
     prisma.project.findMany({ orderBy: { updatedAt: "desc" } }),
+    prisma.membershipStatistic.findMany({ orderBy: [{ sortOrder: "asc" }, { year: "asc" }] }),
     prisma.financialReport.findMany({ orderBy: { year: "desc" } }),
     prisma.member.findMany({ orderBy: { updatedAt: "desc" } }),
     prisma.membershipApplication.findMany({ orderBy: { createdAt: "desc" } }),
@@ -20,7 +46,7 @@ async function getAdminData() {
     prisma.galleryItem.findMany({ orderBy: { createdAt: "desc" } })
   ]);
 
-  return { settings, projects, reports, members, applications, board, events, gallery };
+  return { settings, projects, membershipStats, reports, members, applications, board, events, gallery };
 }
 
 export default async function AdminPage({
@@ -123,7 +149,7 @@ export default async function AdminPage({
                 <Textarea label="Beschreibung Deutsch" name="summaryDe" required />
                 <button className="rounded-md bg-pine px-5 py-3 font-black text-white lg:col-span-2" type="submit">Shto projekt</button>
               </form>
-              <ItemList items={data.projects.map((item) => ({ id: item.id, title: item.titleSq, meta: `${item.year} · ${item.status}`, model: "project" }))} />
+              <ProjectsEditor projects={data.projects} />
             </AdminSection>
 
             <AdminSection title="Raportet financiare">
@@ -145,6 +171,30 @@ export default async function AdminPage({
                 <button className="rounded-md bg-pine px-5 py-3 font-black text-white lg:col-span-2" type="submit">Shto raport</button>
               </form>
               <ReportsEditor reports={data.reports} />
+            </AdminSection>
+
+            <AdminSection title="Statistikat e anëtarësisë">
+              <form action="/api/admin/membership-stat" method="post" className="grid gap-4 lg:grid-cols-3">
+                <YearField label="Viti" name="year" defaultValue={String(new Date().getFullYear())} required />
+                <Field label="Numri i anëtarëve" name="memberCount" type="number" defaultValue="0" required />
+                <label>
+                  <span className="admin-label">Statusi</span>
+                  <select className="admin-input mt-1" name="status" defaultValue="in_progress">
+                    <option value="in_progress">in_progress</option>
+                    <option value="closed">closed</option>
+                  </select>
+                </label>
+                <label>
+                  <span className="admin-label">Data e përditësimit</span>
+                  <input className="admin-input mt-1" name="dateUpdated" type="date" />
+                </label>
+                <Field label="Renditja" name="sortOrder" type="number" defaultValue={String(new Date().getFullYear())} />
+                <label className="flex items-center gap-2 pt-6 font-bold"><input name="isPublished" type="checkbox" defaultChecked /> Publiko</label>
+                <Textarea label="Shënim shqip" name="noteSq" />
+                <Textarea label="Hinweis Deutsch" name="noteDe" />
+                <button className="rounded-md bg-pine px-5 py-3 font-black text-white lg:col-span-3" type="submit">Shto statistikë</button>
+              </form>
+              <MembershipStatsEditor stats={data.membershipStats} />
             </AdminSection>
 
             <AdminSection title="Anëtarët dhe privatësia">
@@ -358,6 +408,116 @@ function Textarea({ label, name, required = false }: { label: string; name: stri
 }
 
 type AdminReport = NonNullable<Awaited<ReturnType<typeof getAdminData>>>["reports"][number];
+type AdminProject = NonNullable<Awaited<ReturnType<typeof getAdminData>>>["projects"][number];
+type AdminMembershipStat = NonNullable<Awaited<ReturnType<typeof getAdminData>>>["membershipStats"][number];
+
+function dateInputValue(value: Date | string | null) {
+  if (!value) return "";
+  const date = typeof value === "string" ? new Date(value) : value;
+  if (Number.isNaN(date.getTime())) return "";
+  return date.toISOString().slice(0, 10);
+}
+
+function ProjectsEditor({ projects }: { projects: AdminProject[] }) {
+  if (!projects.length) return <p className="mt-5 text-sm font-bold text-ink/55">Ende nuk ka projekte.</p>;
+
+  return (
+    <div className="mt-6 space-y-4">
+      <h3 className="text-lg font-black text-ink">Projektet ekzistuese dhe arkiva</h3>
+      {projects.map((project) => (
+        <article key={project.id} className="rounded-lg border border-ink/10 bg-ink/[0.03] p-4">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <h4 className="font-black text-ink">{project.year} · {project.titleSq}</h4>
+              <p className="text-sm font-semibold text-ink/60">
+                {project.category} · {project.status} · {project.isPublished ? "Publikuar" : "I fshehur"}
+              </p>
+            </div>
+            <ConfirmDeleteForm id={project.id} model="project" label="Fshi" message={`A jeni të sigurt që doni ta fshini projektin ${project.titleSq}?`} />
+          </div>
+
+          <details className="mt-4">
+            <summary className="cursor-pointer rounded-md bg-ink px-4 py-3 text-sm font-black text-white">Edit</summary>
+            <form action="/api/admin/project-update" method="post" className="mt-4 grid gap-4 lg:grid-cols-2">
+              <input type="hidden" name="id" value={project.id} />
+              <Field label="Titulli shqip" name="titleSq" defaultValue={project.titleSq} required />
+              <Field label="Titel Deutsch" name="titleDe" defaultValue={project.titleDe} required />
+              <Field label="Kategori" name="category" defaultValue={project.category} required />
+              <Field label="Status" name="status" defaultValue={project.status} required />
+              <YearField label="Viti" name="year" defaultValue={String(project.year)} required />
+              <Field label="Buxheti CHF" name="budget" type="number" defaultValue={moneyText(project.budget)} />
+              <ImageUploadField label="Image URL" name="imageUrl" defaultValue={project.imageUrl || ""} />
+              <label className="flex items-center gap-2 pt-6 font-bold"><input name="isPublished" type="checkbox" defaultChecked={project.isPublished} /> Publiko</label>
+              <label>
+                <span className="admin-label">Përshkrim shqip</span>
+                <textarea className="admin-input mt-1" name="summarySq" rows={4} defaultValue={project.summarySq} required />
+              </label>
+              <label>
+                <span className="admin-label">Beschreibung Deutsch</span>
+                <textarea className="admin-input mt-1" name="summaryDe" rows={4} defaultValue={project.summaryDe} required />
+              </label>
+              <button className="rounded-md bg-pine px-5 py-3 font-black text-white lg:col-span-2" type="submit">Ruaj ndryshimet</button>
+            </form>
+          </details>
+        </article>
+      ))}
+    </div>
+  );
+}
+
+function MembershipStatsEditor({ stats }: { stats: AdminMembershipStat[] }) {
+  if (!stats.length) return <p className="mt-5 text-sm font-bold text-ink/55">Ende nuk ka statistika.</p>;
+
+  return (
+    <div className="mt-6 space-y-4">
+      <h3 className="text-lg font-black text-ink">Statistikat ekzistuese</h3>
+      {stats.map((stat) => (
+        <article key={stat.id} className="rounded-lg border border-ink/10 bg-ink/[0.03] p-4">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <h4 className="font-black text-ink">{stat.year} · {stat.memberCount} anëtarë</h4>
+              <p className="text-sm font-semibold text-ink/60">
+                {stat.status} · renditja {stat.sortOrder} · {stat.isPublished ? "Publikuar" : "I fshehur"}
+              </p>
+            </div>
+            <ConfirmDeleteForm id={stat.id} model="membershipStat" label="Fshi" message={`A jeni të sigurt që doni ta fshini statistikën për vitin ${stat.year}?`} />
+          </div>
+
+          <details className="mt-4">
+            <summary className="cursor-pointer rounded-md bg-ink px-4 py-3 text-sm font-black text-white">Edit</summary>
+            <form action="/api/admin/membership-stat-update" method="post" className="mt-4 grid gap-4 lg:grid-cols-3">
+              <input type="hidden" name="id" value={stat.id} />
+              <YearField label="Viti" name="year" defaultValue={String(stat.year)} required />
+              <Field label="Numri i anëtarëve" name="memberCount" type="number" defaultValue={String(stat.memberCount)} required />
+              <label>
+                <span className="admin-label">Statusi</span>
+                <select className="admin-input mt-1" name="status" defaultValue={stat.status}>
+                  <option value="in_progress">in_progress</option>
+                  <option value="closed">closed</option>
+                </select>
+              </label>
+              <label>
+                <span className="admin-label">Data e përditësimit</span>
+                <input className="admin-input mt-1" name="dateUpdated" type="date" defaultValue={dateInputValue(stat.dateUpdated)} />
+              </label>
+              <Field label="Renditja" name="sortOrder" type="number" defaultValue={String(stat.sortOrder)} />
+              <label className="flex items-center gap-2 pt-6 font-bold"><input name="isPublished" type="checkbox" defaultChecked={stat.isPublished} /> Publiko</label>
+              <label className="lg:col-span-3">
+                <span className="admin-label">Shënim shqip</span>
+                <textarea className="admin-input mt-1" name="noteSq" rows={3} defaultValue={stat.noteSq || ""} />
+              </label>
+              <label className="lg:col-span-3">
+                <span className="admin-label">Hinweis Deutsch</span>
+                <textarea className="admin-input mt-1" name="noteDe" rows={3} defaultValue={stat.noteDe || ""} />
+              </label>
+              <button className="rounded-md bg-pine px-5 py-3 font-black text-white lg:col-span-3" type="submit">Ruaj ndryshimet</button>
+            </form>
+          </details>
+        </article>
+      ))}
+    </div>
+  );
+}
 
 function ReportsEditor({ reports }: { reports: AdminReport[] }) {
   if (!reports.length) return <p className="mt-5 text-sm font-bold text-ink/55">Ende nuk ka raporte financiare.</p>;

@@ -32,6 +32,16 @@ export type PublicData = {
     budget?: number | null;
     imageUrl?: string | null;
   }>;
+  membershipStats: Array<{
+    id: string;
+    year: number;
+    memberCount: number;
+    status: string;
+    dateUpdated?: string | null;
+    noteSq?: string | null;
+    noteDe?: string | null;
+    sortOrder: number;
+  }>;
   reports: Array<{
     id: string;
     year: number;

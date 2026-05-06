@@ -56,6 +56,20 @@ model Project {
   updatedAt   DateTime @updatedAt
 }
 
+model MembershipStatistic {
+  id          String   @id @default(cuid())
+  year        Int
+  memberCount Int
+  status      String   @default("in_progress")
+  dateUpdated DateTime?
+  noteSq      String?
+  noteDe      String?
+  sortOrder   Int      @default(0)
+  isPublished Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
 model FinancialReport {
   id          String   @id @default(cuid())
   year        Int

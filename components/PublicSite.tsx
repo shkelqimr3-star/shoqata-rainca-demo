@@ -3,6 +3,7 @@ import { FinancialDashboard } from "@/components/Charts";
 import { CopyIbanButton } from "@/components/CopyIbanButton";
 import { Logo } from "@/components/Logo";
 import { MembersDirectory } from "@/components/MembersDirectory";
+import { ProjectsDirectory } from "@/components/ProjectsDirectory";
 import { SafeImage } from "@/components/SafeImage";
 import { copy, navItems, withLang } from "@/lib/translations";
 import type { Lang, PublicData } from "@/lib/types";
@@ -43,6 +44,12 @@ function currency(value?: number | null) {
 
 function AssetImage({ src, alt, className }: { src?: string | null; alt: string; className: string }) {
   return <SafeImage src={src} alt={alt} className={className} />;
+}
+
+function statLabel(lang: Lang, status: string, memberCount: number) {
+  const inProgress = status === "in_progress";
+  if (lang === "de") return `${memberCount} Mitglieder ${inProgress ? "bisher" : "insgesamt"}`;
+  return `${memberCount} anëtarë ${inProgress ? "deri tani" : "gjithsej"}`;
 }
 
 export function PublicSite({ data, lang, page = "home", saved = false }: PublicSiteProps) {
@@ -141,27 +148,7 @@ export function PublicSite({ data, lang, page = "home", saved = false }: PublicS
         {(showAll || active === "projects") && (
           <section className="py-10">
             <SectionTitle eyebrow={tx(lang, "Prioritetet", "Prioritäten")} title={t.projects} />
-            <div className="grid gap-5 md:grid-cols-3">
-              {data.projects.map((project) => (
-                <article key={project.id} className="overflow-hidden rounded-lg border border-ink/10 bg-white shadow-sm">
-                  <div className="relative h-44 bg-skywash">
-                    <AssetImage src={project.imageUrl} alt={tx(lang, project.titleSq, project.titleDe)} className="h-full w-full" />
-                  </div>
-                  <div className="p-5">
-                    <div className="mb-3 flex flex-wrap gap-2 text-xs font-black">
-                      <span className="rounded-full bg-pine/10 px-3 py-1 text-pine">{project.category}</span>
-                      <span className="rounded-full bg-gold/15 px-3 py-1 text-ink">{project.status}</span>
-                    </div>
-                    <h3 className="text-xl font-black text-ink">{tx(lang, project.titleSq, project.titleDe)}</h3>
-                    <p className="mt-3 leading-7 text-ink/70">{tx(lang, project.summarySq, project.summaryDe)}</p>
-                    <div className="mt-4 flex justify-between text-sm font-bold text-ink/62">
-                      <span>{project.year}</span>
-                      <span>{currency(project.budget)}</span>
-                    </div>
-                  </div>
-                </article>
-              ))}
-            </div>
+            <ProjectsDirectory projects={data.projects} lang={lang} />
           </section>
         )}
 
@@ -194,26 +181,22 @@ export function PublicSite({ data, lang, page = "home", saved = false }: PublicS
             <div className="mb-8 rounded-lg border border-ink/10 bg-white p-5 shadow-sm">
               <h3 className="text-2xl font-black text-ink">{tx(lang, "Statistika e anëtarësisë", "Mitgliederstatistik")}</h3>
               <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-                {[
-                  ["2023", "214", tx(lang, "anëtarë", "Mitglieder")],
-                  ["2024", "239", tx(lang, "anëtarë", "Mitglieder")],
-                  ["2025", "226", tx(lang, "anëtarë", "Mitglieder")],
-                  ["2026", "83", tx(lang, "anëtarë deri tani", "Mitglieder bisher")]
-                ].map(([year, value, label]) => (
-                  <div key={year} className="rounded-lg bg-pine/5 p-4">
-                    <p className="text-sm font-black uppercase tracking-wide text-pine">{year}</p>
-                    <p className="mt-2 text-3xl font-black text-ink">{value}</p>
-                    <p className="text-sm font-semibold text-ink/60">{label}</p>
+                {data.membershipStats.map((stat) => (
+                  <div key={stat.id} className="rounded-lg bg-pine/5 p-4">
+                    <p className="text-sm font-black uppercase tracking-wide text-pine">{stat.year}</p>
+                    <p className="mt-2 text-2xl font-black text-ink">{statLabel(lang, stat.status, stat.memberCount)}</p>
                   </div>
                 ))}
               </div>
-              <p className="mt-4 text-sm font-semibold leading-6 text-ink/62">
-                {tx(
-                  lang,
-                  "Shënim: Për vitin 2026 janë llogaritur vetëm pagesat e regjistruara deri tani sipas listës së fundit të anëtarëve.",
-                  "Hinweis: Für das Jahr 2026 wurden nur die bisher erfassten Zahlungen gemäß der aktuellen Mitgliederliste berücksichtigt."
-                )}
-              </p>
+              {data.membershipStats.some((stat) => stat.noteSq || stat.noteDe) && (
+                <div className="mt-4 space-y-2 text-sm font-semibold leading-6 text-ink/62">
+                  {data.membershipStats
+                    .filter((stat) => stat.noteSq || stat.noteDe)
+                    .map((stat) => (
+                      <p key={`${stat.id}-note`}>{tx(lang, stat.noteSq || "", stat.noteDe || "")}</p>
+                    ))}
+                </div>
+              )}
             </div>
             <MembersDirectory members={data.members} lang={lang} />
           </section>

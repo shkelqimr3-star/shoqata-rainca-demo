@@ -32,6 +32,40 @@ function reportCategories(formData: FormData) {
     });
 }
 
+function dateValue(formData: FormData, key: string) {
+  const value = text(formData, key);
+  return value ? new Date(`${value}T00:00:00.000Z`) : null;
+}
+
+function projectData(formData: FormData) {
+  return {
+    titleSq: text(formData, "titleSq"),
+    titleDe: text(formData, "titleDe"),
+    summarySq: text(formData, "summarySq"),
+    summaryDe: text(formData, "summaryDe"),
+    category: text(formData, "category"),
+    status: text(formData, "status"),
+    year: intValue(formData, "year", new Date().getFullYear()),
+    budget: text(formData, "budget") || undefined,
+    imageUrl: optionalText(formData, "imageUrl"),
+    isPublished: boolValue(formData, "isPublished")
+  };
+}
+
+function membershipStatData(formData: FormData) {
+  const status = text(formData, "status");
+  return {
+    year: intValue(formData, "year", new Date().getFullYear()),
+    memberCount: intValue(formData, "memberCount"),
+    status: status === "closed" ? "closed" : "in_progress",
+    dateUpdated: dateValue(formData, "dateUpdated"),
+    noteSq: optionalText(formData, "noteSq"),
+    noteDe: optionalText(formData, "noteDe"),
+    sortOrder: intValue(formData, "sortOrder", intValue(formData, "year", new Date().getFullYear())),
+    isPublished: boolValue(formData, "isPublished")
+  };
+}
+
 async function fileBytes(formData: FormData, key: string) {
   const file = formData.get(key);
   if (!(file instanceof File) || file.size === 0) return null;
@@ -112,18 +146,27 @@ export async function POST(request: Request, { params }: { params: Promise<{ act
 
   if (action === "project") {
     await prisma.project.create({
-      data: {
-        titleSq: text(formData, "titleSq"),
-        titleDe: text(formData, "titleDe"),
-        summarySq: text(formData, "summarySq"),
-        summaryDe: text(formData, "summaryDe"),
-        category: text(formData, "category"),
-        status: text(formData, "status"),
-        year: intValue(formData, "year", new Date().getFullYear()),
-        budget: text(formData, "budget") || undefined,
-        imageUrl: optionalText(formData, "imageUrl"),
-        isPublished: boolValue(formData, "isPublished")
-      }
+      data: projectData(formData)
+    });
+  }
+
+  if (action === "project-update") {
+    await prisma.project.update({
+      where: { id: text(formData, "id") },
+      data: projectData(formData)
+    });
+  }
+
+  if (action === "membership-stat") {
+    await prisma.membershipStatistic.create({
+      data: membershipStatData(formData)
+    });
+  }
+
+  if (action === "membership-stat-update") {
+    await prisma.membershipStatistic.update({
+      where: { id: text(formData, "id") },
+      data: membershipStatData(formData)
     });
   }
 
@@ -237,6 +280,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ act
     const id = text(formData, "id");
     if (model === "project") await prisma.project.delete({ where: { id } });
     if (model === "report") await prisma.financialReport.delete({ where: { id } });
+    if (model === "membershipStat") await prisma.membershipStatistic.delete({ where: { id } });
     if (model === "member") await prisma.member.delete({ where: { id } });
     if (model === "board") await prisma.boardMember.delete({ where: { id } });
     if (model === "event") await prisma.event.delete({ where: { id } });
