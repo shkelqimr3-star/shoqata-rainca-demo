@@ -34,23 +34,8 @@ function tx(lang: Lang, sq: string, de: string) {
   return lang === "de" ? de : sq;
 }
 
-function currency(value?: number | null) {
-  if (!value) return "";
-  return new Intl.NumberFormat("de-CH", {
-    style: "currency",
-    currency: "CHF",
-    maximumFractionDigits: 0
-  }).format(value);
-}
-
 function AssetImage({ src, alt, className }: { src?: string | null; alt: string; className: string }) {
   return <SafeImage src={src} alt={alt} className={className} />;
-}
-
-function statLabel(lang: Lang, status: string, memberCount: number) {
-  const inProgress = status === "in_progress";
-  if (lang === "de") return `${memberCount} Mitglieder ${inProgress ? "bisher" : "insgesamt"}`;
-  return `${memberCount} anëtarë ${inProgress ? "deri tani" : "gjithsej"}`;
 }
 
 export function PublicSite({ data, lang, page = "home", saved = false }: PublicSiteProps) {
@@ -181,14 +166,6 @@ export function PublicSite({ data, lang, page = "home", saved = false }: PublicS
             <p className="mb-5 max-w-3xl font-semibold leading-7 text-ink/65">{t.publicOnly}</p>
             <div className="mb-8 rounded-lg border border-ink/10 bg-white p-5 shadow-sm">
               <h3 className="text-2xl font-black text-ink">{tx(lang, "Statistika e anëtarësisë", "Mitgliederstatistik")}</h3>
-              <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-                {data.membershipStats.map((stat) => (
-                  <div key={stat.id} className="rounded-lg bg-pine/5 p-4">
-                    <p className="text-sm font-black uppercase tracking-wide text-pine">{stat.year}</p>
-                    <p className="mt-2 text-2xl font-black text-ink">{statLabel(lang, stat.status, stat.memberCount)}</p>
-                  </div>
-                ))}
-              </div>
               <MembershipStatsChart stats={data.membershipStats} lang={lang} />
               {data.membershipStats.some((stat) => stat.noteSq || stat.noteDe) && (
                 <div className="mt-4 space-y-2 text-sm font-semibold leading-6 text-ink/62">
