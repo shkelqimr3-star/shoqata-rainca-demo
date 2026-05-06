@@ -3,6 +3,7 @@ import { FinancialDashboard } from "@/components/Charts";
 import { CopyIbanButton } from "@/components/CopyIbanButton";
 import { Logo } from "@/components/Logo";
 import { MembersDirectory } from "@/components/MembersDirectory";
+import { MembershipStatsChart } from "@/components/MembershipStatsChart";
 import { ProjectsDirectory } from "@/components/ProjectsDirectory";
 import { SafeImage } from "@/components/SafeImage";
 import { copy, navItems, withLang } from "@/lib/translations";
@@ -188,6 +189,7 @@ export function PublicSite({ data, lang, page = "home", saved = false }: PublicS
                   </div>
                 ))}
               </div>
+              <MembershipStatsChart stats={data.membershipStats} lang={lang} />
               {data.membershipStats.some((stat) => stat.noteSq || stat.noteDe) && (
                 <div className="mt-4 space-y-2 text-sm font-semibold leading-6 text-ink/62">
                   {data.membershipStats
