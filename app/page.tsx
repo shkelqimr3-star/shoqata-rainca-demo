@@ -30,7 +30,7 @@ export default function Home() {
           </a>
           <nav>
             <a href="#aktivitetet">Aktivitetet</a>
-            <a href="#anetaresia">Anëtarësia</a>
+            <a href="/antaret">Anëtarët</a>\n            <a href="#anetaresia">Anëtarësia</a>
             <a href="#transparenca">Transparenca</a>
             <a href="#kontakt">Kontakt</a>
           </nav>
@@ -47,7 +47,7 @@ export default function Home() {
               <p>Informacione, aktivitete, projekte dhe transparencë për anëtarët dhe bashkëfshatarët.</p>
               <div className="hero-actions">
                 <a className="button primary" href="#eventi">Eventi i ardhshëm</a>
-                <a className="button ghost" href="#anetaresia">Anëtarësia</a>
+                <a className="button ghost" href="/antaret">Lista e anëtarëve</a>
               </div>
             </div>
           </div>
@@ -108,7 +108,7 @@ export default function Home() {
             <div>
               <span className="eyebrow light">ANËTARËSIA</span>
               <h2>Një tarifë.<br />Një pasqyrë e qartë.</h2>
-              <p>Anëtarët regjistrohen nga administratori i Shoqatës. Pagesat ruhen sipas vitit dhe shfaqen në listën e anëtarëve.</p>
+              <p>Anëtarët regjistrohen nga administratori i Shoqatës. Pagesat ruhen sipas vitit dhe shfaqen në listën e anëtarëve.</p><a className="text-link-light" href="/antaret">Shiko listën e anëtarëve →</a>
             </div>
             <div className="fee">
               <span>Anëtarësia vjetore</span>
