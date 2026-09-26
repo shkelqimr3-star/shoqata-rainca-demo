@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import type { MemberRecord, PaymentYear } from "@/data/member-records";
-import { createV2Member, updateV2MemberProfile } from "@/app/admin-v2/actions";
+import { createV2Member, deleteV2Member, updateV2MemberProfile } from "@/app/admin-v2/actions";
 
 const years: PaymentYear[] = ["2023","2024","2025","2026"];
 
