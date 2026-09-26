@@ -32,7 +32,8 @@ export default async function AdminV2Page({ searchParams }: { searchParams: Prom
     );
   }
 
-  const { members, databaseMode, overrides } = await getV2Members();\n  const activeMembers = members.filter((m) => !m.archived);
+  const { members, databaseMode, overrides } = await getV2Members();
+  const activeMembers = members.filter((m) => !m.archived);
   const recent = [...overrides].sort((a,b) => b.updatedAt.getTime() - a.updatedAt.getTime()).slice(0,20);
 
   return (
@@ -44,7 +45,8 @@ export default async function AdminV2Page({ searchParams }: { searchParams: Prom
             <h1>Pagesat e anëtarëve</h1>
           </div>
           <div className="admin-v2-actions">
-            <Link href="/admin-v2/antaret">Anëtarët</Link>\n            <Link href="/antaret">Shiko listën publike</Link>
+            <Link href="/admin-v2/antaret">Anëtarët</Link>
+            <Link href="/antaret">Shiko listën publike</Link>
             <form action={logoutV2}><button type="submit">Dil</button></form>
           </div>
         </div>
@@ -56,7 +58,8 @@ export default async function AdminV2Page({ searchParams }: { searchParams: Prom
         </div>
 
         {!databaseMode && <div className="admin-v2-alert">DATABASE_URL nuk është aktiv në këtë environment. Formulari nuk duhet përdorur derisa databaza të lidhet.</div>}
-        {params.saved === "1" && <div className="admin-v2-success">Pagesa u ruajt dhe lista publike u përditësua.</div>}\n        {params.reverted === "1" && <div className="admin-v2-success">Ndryshimi i pagesës u hoq dhe u rikthye vlera nga lista bazë.</div>}
+        {params.saved === "1" && <div className="admin-v2-success">Pagesa u ruajt dhe lista publike u përditësua.</div>}
+        {params.reverted === "1" && <div className="admin-v2-success">Ndryshimi i pagesës u hoq dhe u rikthye vlera nga lista bazë.</div>}
         {params.error && params.error !== "1" && <div className="admin-v2-alert">Nuk u ruajt ndryshimi ({String(params.error)}).</div>}
 
         <div className="admin-v2-grid">
