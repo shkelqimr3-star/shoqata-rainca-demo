@@ -46,6 +46,7 @@ export default async function AdminV2Page({ searchParams }: { searchParams: Prom
           </div>
           <div className="admin-v2-actions">
             <Link href="/admin-v2/antaret">Anëtarët</Link>
+            <Link href="/admin-v2/permbajtja">Përmbajtja</Link>
             <Link href="/antaret">Shiko listën publike</Link>
             <form action={logoutV2}><button type="submit">Dil</button></form>
           </div>
