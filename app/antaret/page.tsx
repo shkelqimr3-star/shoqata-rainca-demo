@@ -37,7 +37,7 @@ export default async function MembersPage() {
             </div>
             <aside className="members-stat">
               <span>Anëtarë në listë</span>
-              <strong>{members.length}</strong>
+              <strong>{activeMembers.length}</strong>
               <small>{paid2026} me pagesë të regjistruar për 2026</small>
             </aside>
           </div>
@@ -49,7 +49,7 @@ export default async function MembersPage() {
               <div><span className="eyebrow">DIREKTORIA</span><h2>Kërko anëtarin</h2></div>
               <p className="section-note">Statusi tregon çfarë është regjistruar në listën burimore dhe çdo ndryshim të ruajtur nga administratori.</p>
             </div>
-            <MemberDirectoryV2 members={members} />
+            <MemberDirectoryV2 members={activeMembers} />
             <div className="source-note">
               <strong>Shënim i burimit:</strong> numri 24 paraqitet dy herë në dokumentin origjinal. Të dhënat janë ruajtur siç janë në listë dhe korrigjohen vetëm pas verifikimit nga Shoqata.
             </div>
