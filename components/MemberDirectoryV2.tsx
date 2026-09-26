@@ -13,21 +13,21 @@ function paymentLabel(amount: number) {
 export default function MemberDirectoryV2({ members }: { members: MemberRecord[] }) {
   const [query, setQuery] = useState("");
   const [year, setYear] = useState<PaymentYear | "all">("2026");
-  const [status, setStatus] = useState<"all" | "paid" | "open">("all");
+  const [status, setStatus] = useState<"all" | "paid" | "open">("all");\n  const [neighborhood, setNeighborhood] = useState("all");
 
-  const filtered = useMemo(() => {
+  const neighborhoods = useMemo(() => Array.from(new Set(members.map((m) => m.neighborhood).filter(Boolean) as string[])).sort((a,b) => a.localeCompare(b, "sq")), [members]);\n\n  const filtered = useMemo(() => {
     const q = query.trim().toLocaleLowerCase("sq");
     return members.filter((member) => {
       const name = `${member.firstName} ${member.lastName}`.toLocaleLowerCase("sq");
       if (q && !name.includes(q)) return false;
-      if (year !== "all" && status !== "all") {
+      if (neighborhood !== "all" && member.neighborhood !== neighborhood) return false;\n      if (year !== "all" && status !== "all") {
         const paid = member.payments[year] > 0;
         if (status === "paid" && !paid) return false;
         if (status === "open" && paid) return false;
       }
       return true;
     });
-  }, [members, query, year, status]);
+  }, [members, neighborhood, query, year, status]);
 
   return (
     <div className="member-directory">
@@ -55,13 +55,13 @@ export default function MemberDirectoryV2({ members }: { members: MemberRecord[]
 
       <div className="member-meta">
         <span><strong>{filtered.length}</strong> rezultate</span>
-        <span>Lagjet / mahallat shtohen pasi të verifikohen.</span>
+        <span>{neighborhoods.length ? "Mund të filtrosh edhe sipas lagjes." : "Lagjet / mahallat shtohen pasi të verifikohen."}</span>
       </div>
 
       <div className="member-table-wrap">
         <table className="member-table">
           <thead>
-            <tr><th>Nr.</th><th>Anëtari</th><th>2023</th><th>2024</th><th>2025</th><th>2026</th></tr>
+            <tr><th>Nr.</th><th>Anëtari</th><th>Lagjja</th><th>2023</th><th>2024</th><th>2025</th><th>2026</th></tr>
           </thead>
           <tbody>
             {filtered.map((member) => (
