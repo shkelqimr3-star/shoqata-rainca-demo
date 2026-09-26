@@ -160,3 +160,35 @@ export async function updateV2MemberProfile(formData: FormData) {
   revalidatePath("/admin-v2/antaret");
   redirect("/admin-v2/antaret?saved=1");
 }
+
+
+export async function deleteV2Member(formData: FormData) {
+  await requireAdmin();
+
+  const sourceIndex = Number(formData.get("sourceIndex"));
+  if (!Number.isInteger(sourceIndex)) redirect("/admin-v2/antaret?error=member");
+
+  const prefix = `V2_PROFILE:${sourceIndex}:`;
+  const profile = await prisma.member.findFirst({
+    where: { notes: { startsWith: prefix } },
+    orderBy: { updatedAt: "desc" }
+  });
+
+  if (!profile?.notes?.endsWith(":NEW")) {
+    redirect("/admin-v2/antaret?error=delete");
+  }
+
+  await prisma.member.deleteMany({
+    where: {
+      OR: [
+        { notes: { startsWith: `V2_PROFILE:${sourceIndex}:` } },
+        { notes: { startsWith: `V2_OVERRIDE:${sourceIndex}:` } }
+      ]
+    }
+  });
+
+  revalidatePath("/antaret");
+  revalidatePath("/admin-v2");
+  revalidatePath("/admin-v2/antaret");
+  redirect("/admin-v2/antaret?deleted=1");
+}
