@@ -26,6 +26,7 @@ export default async function Home() {
             <Link href="/eventet">Eventet</Link>
             <Link href="/projektet">Projektet</Link>
             <Link href="/antaret">Anëtarët</Link>
+            <Link href="/galeria">Galeria</Link>
             <a href="#anetaresia">Anëtarësia</a>
             <Link href="/transparenca">Transparenca</Link>
           </nav>
