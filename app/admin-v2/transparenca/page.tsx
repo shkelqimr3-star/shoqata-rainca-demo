@@ -1,4 +1,5 @@
 import Link from "next/link";
+import DirectUploadField from "@/components/admin/DirectUploadField";
 import { redirect } from "next/navigation";
 import { isV2Admin } from "@/lib/v2-auth";
 import {
@@ -85,7 +86,7 @@ export default async function AdminTransparencyPage({
             <label className="span-two"><span>IBAN</span><input name="iban" defaultValue={settings.iban || ""} /></label>
             <label><span>Banka</span><input name="bankName" defaultValue={settings.bankName || ""} /></label>
             <label><span>BIC / SWIFT</span><input name="bic" defaultValue={settings.bic || ""} /></label>
-            <label className="span-two"><span>QR image URL</span><input name="qrUrl" defaultValue={settings.qrUrl || ""} placeholder="https://..." /></label>
+            <DirectUploadField className="span-two" name="qrUrl" label="QR image" accept="image/jpeg,image/png,image/webp,image/gif" defaultValue={settings.qrUrl || ""} />
             <label className="span-two"><span>Facebook</span><input name="facebookUrl" defaultValue={settings.facebookUrl || ""} /></label>
             <label className="span-two"><span>Udhëzim për pagesa nga Gjermania</span><textarea name="germanyPaymentNote" rows={3} defaultValue={settings.germanyPaymentNote || ""} /></label>
             <label className="span-two"><span>Shënim për donacionet</span><textarea name="donationNote" rows={3} defaultValue={settings.donationNote || ""} /></label>
@@ -110,7 +111,7 @@ export default async function AdminTransparencyPage({
                 <label><span>Shpenzime (opsionale)</span><input name="expenses" type="number" min="0" step="0.01" /></label>
               </div>
               <label><span>Shënim</span><textarea name="note" rows={3} /></label>
-              <label><span>PDF / URL</span><input name="pdfUrl" placeholder="https://..." /></label>
+              <DirectUploadField name="pdfUrl" label="PDF / URL" accept="application/pdf" />
               <label className="admin-check"><input name="published" type="checkbox" /> Publiko</label>
               <button type="submit">Shto raportin</button>
             </form>
@@ -130,7 +131,7 @@ export default async function AdminTransparencyPage({
                     <label><span>Të hyra</span><input name="income" type="number" min="0" step="0.01" defaultValue={report.income || ""} /></label>
                     <label><span>Shpenzime</span><input name="expenses" type="number" min="0" step="0.01" defaultValue={report.expenses || ""} /></label>
                     <label className="span-two"><span>Shënim</span><textarea name="note" rows={3} defaultValue={report.note || ""} /></label>
-                    <label className="span-two"><span>PDF / URL</span><input name="pdfUrl" defaultValue={report.pdfUrl || ""} /></label>
+                    <DirectUploadField className="span-two" name="pdfUrl" label="PDF / URL" accept="application/pdf" defaultValue={report.pdfUrl || ""} />
                     <label className="admin-check span-two"><input name="published" type="checkbox" defaultChecked={report.published} /> Publiko</label>
                     <button type="submit">Ruaj raportin</button>
                   </form>
@@ -155,7 +156,7 @@ export default async function AdminTransparencyPage({
                 <label><span>Viti</span><input name="year" type="number" /></label>
               </div>
               <label><span>Përshkrimi</span><textarea name="description" rows={3} /></label>
-              <label><span>File / URL</span><input name="fileUrl" placeholder="https://..." required /></label>
+              <DirectUploadField name="fileUrl" label="File / URL" accept="application/pdf,image/jpeg,image/png,image/webp" />
               <label className="admin-check"><input name="published" type="checkbox" defaultChecked /> Publiko</label>
               <button type="submit">Shto dokumentin</button>
             </form>
@@ -173,7 +174,7 @@ export default async function AdminTransparencyPage({
                     <label><span>Titulli</span><input name="title" defaultValue={document.title} required /></label>
                     <label><span>Kategoria</span><input name="category" defaultValue={document.category} required /></label>
                     <label><span>Viti</span><input name="year" type="number" defaultValue={document.year || ""} /></label>
-                    <label><span>File / URL</span><input name="fileUrl" defaultValue={document.fileUrl} required /></label>
+                    <DirectUploadField name="fileUrl" label="File / URL" accept="application/pdf,image/jpeg,image/png,image/webp" defaultValue={document.fileUrl} />
                     <label className="span-two"><span>Përshkrimi</span><textarea name="description" rows={3} defaultValue={document.description || ""} /></label>
                     <label className="admin-check span-two"><input name="published" type="checkbox" defaultChecked={document.published} /> Publiko</label>
                     <button type="submit">Ruaj dokumentin</button>
