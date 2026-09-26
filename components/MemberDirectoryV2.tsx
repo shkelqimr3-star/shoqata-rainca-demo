@@ -13,18 +13,36 @@ function paymentLabel(amount: number) {
 export default function MemberDirectoryV2({ members }: { members: MemberRecord[] }) {
   const [query, setQuery] = useState("");
   const [year, setYear] = useState<PaymentYear | "all">("2026");
-  const [status, setStatus] = useState<"all" | "paid" | "open">("all");\n  const [neighborhood, setNeighborhood] = useState("all");
+  const [status, setStatus] = useState<"all" | "paid" | "open">("all");
+  const [neighborhood, setNeighborhood] = useState("all");
 
-  const neighborhoods = useMemo(() => Array.from(new Set(members.map((m) => m.neighborhood).filter(Boolean) as string[])).sort((a,b) => a.localeCompare(b, "sq")), [members]);\n\n  const filtered = useMemo(() => {
+  const neighborhoods = useMemo(
+    () =>
+      Array.from(
+        new Set(
+          members
+            .map((member) => member.neighborhood)
+            .filter((value): value is string => Boolean(value))
+        )
+      ).sort((a, b) => a.localeCompare(b, "sq")),
+    [members]
+  );
+
+  const filtered = useMemo(() => {
     const q = query.trim().toLocaleLowerCase("sq");
+
     return members.filter((member) => {
-      const name = `${member.firstName} ${member.lastName}`.toLocaleLowerCase("sq");
-      if (q && !name.includes(q)) return false;
-      if (neighborhood !== "all" && member.neighborhood !== neighborhood) return false;\n      if (year !== "all" && status !== "all") {
+      const searchable = `${member.firstName} ${member.lastName} ${member.neighborhood || ""}`.toLocaleLowerCase("sq");
+
+      if (q && !searchable.includes(q)) return false;
+      if (neighborhood !== "all" && member.neighborhood !== neighborhood) return false;
+
+      if (year !== "all" && status !== "all") {
         const paid = member.payments[year] > 0;
         if (status === "paid" && !paid) return false;
         if (status === "open" && paid) return false;
       }
+
       return true;
     });
   }, [members, neighborhood, query, year, status]);
@@ -34,18 +52,54 @@ export default function MemberDirectoryV2({ members }: { members: MemberRecord[]
       <div className="member-filters">
         <label className="member-search">
           <span>Kërko</span>
-          <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Emri ose mbiemri…" />
+          <input
+            value={query}
+            onChange={(event) => setQuery(event.target.value)}
+            placeholder="Emri, mbiemri ose lagjja…"
+          />
         </label>
+
         <label>
           <span>Viti</span>
-          <select value={year} onChange={(e) => setYear(e.target.value as PaymentYear | "all")}>
+          <select
+            value={year}
+            onChange={(event) => setYear(event.target.value as PaymentYear | "all")}
+          >
             <option value="all">Të gjitha</option>
-            {years.map((y) => <option key={y} value={y}>{y}</option>)}
+            {years.map((item) => (
+              <option key={item} value={item}>
+                {item}
+              </option>
+            ))}
           </select>
         </label>
+
+        {neighborhoods.length > 0 && (
+          <label>
+            <span>Lagjja</span>
+            <select
+              value={neighborhood}
+              onChange={(event) => setNeighborhood(event.target.value)}
+            >
+              <option value="all">Të gjitha</option>
+              {neighborhoods.map((item) => (
+                <option key={item} value={item}>
+                  {item}
+                </option>
+              ))}
+            </select>
+          </label>
+        )}
+
         <label>
           <span>Statusi</span>
-          <select value={status} onChange={(e) => setStatus(e.target.value as "all" | "paid" | "open")} disabled={year === "all"}>
+          <select
+            value={status}
+            onChange={(event) =>
+              setStatus(event.target.value as "all" | "paid" | "open")
+            }
+            disabled={year === "all"}
+          >
             <option value="all">Të gjithë</option>
             <option value="paid">Me pagesë</option>
             <option value="open">Pa pagesë</option>
@@ -54,30 +108,64 @@ export default function MemberDirectoryV2({ members }: { members: MemberRecord[]
       </div>
 
       <div className="member-meta">
-        <span><strong>{filtered.length}</strong> rezultate</span>
-        <span>{neighborhoods.length ? "Mund të filtrosh edhe sipas lagjes." : "Lagjet / mahallat shtohen pasi të verifikohen."}</span>
+        <span>
+          <strong>{filtered.length}</strong> rezultate
+        </span>
+        <span>
+          {neighborhoods.length
+            ? "Mund të filtrosh edhe sipas lagjes."
+            : "Lagjet / mahallat shtohen pasi të verifikohen."}
+        </span>
       </div>
 
       <div className="member-table-wrap">
         <table className="member-table">
           <thead>
-            <tr><th>Nr.</th><th>Anëtari</th><th>Lagjja</th><th>2023</th><th>2024</th><th>2025</th><th>2026</th></tr>
+            <tr>
+              <th>Nr.</th>
+              <th>Anëtari</th>
+              <th>Lagjja</th>
+              <th>2023</th>
+              <th>2024</th>
+              <th>2025</th>
+              <th>2026</th>
+            </tr>
           </thead>
           <tbody>
             {filtered.map((member) => (
               <tr key={member.sourceIndex}>
                 <td className="member-no">{member.sourceNo}</td>
-                <td><strong>{member.firstName} {member.lastName}</strong></td>
-                {(["2023","2024","2025","2026"] as PaymentYear[]).map((y) => {
-                  const amount = member.payments[y];
-                  return (
-                    <td key={y}>
-                      <span className={amount ? "payment-badge paid" : "payment-badge open"} title={amount ? `${amount} CHF sipas listës` : "Pa pagesë të regjistruar"}>
-                        {paymentLabel(amount)}
-                      </span>
-                    </td>
-                  );
-                })}
+                <td>
+                  <strong>
+                    {member.firstName} {member.lastName}
+                  </strong>
+                </td>
+                <td className="member-neighborhood">
+                  {member.neighborhood || "—"}
+                </td>
+                {(["2023", "2024", "2025", "2026"] as PaymentYear[]).map(
+                  (paymentYear) => {
+                    const amount = member.payments[paymentYear];
+                    return (
+                      <td key={paymentYear}>
+                        <span
+                          className={
+                            amount
+                              ? "payment-badge paid"
+                              : "payment-badge open"
+                          }
+                          title={
+                            amount
+                              ? `${amount} CHF sipas listës`
+                              : "Pa pagesë të regjistruar"
+                          }
+                        >
+                          {paymentLabel(amount)}
+                        </span>
+                      </td>
+                    );
+                  }
+                )}
               </tr>
             ))}
           </tbody>
