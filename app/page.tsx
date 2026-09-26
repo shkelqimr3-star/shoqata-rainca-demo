@@ -27,7 +27,7 @@ export default async function Home() {
             <Link href="/projektet">Projektet</Link>
             <Link href="/antaret">Anëtarët</Link>
             <a href="#anetaresia">Anëtarësia</a>
-            <a href="#transparenca">Transparenca</a>
+            <Link href="/transparenca">Transparenca</Link>
           </nav>
         </div>
       </header>
@@ -109,10 +109,10 @@ export default async function Home() {
           <div className="shell transparency">
             <div><span className="eyebrow">TRANSPARENCA</span><h2>Raportet, projektet dhe dokumentet në një vend.</h2></div>
             <div className="link-grid">
-              <div><strong>Raportet financiare</strong><span>Sipas viteve, vetëm me të dhëna të verifikuara.</span></div>
+              <Link href="/transparenca"><strong>Raportet financiare</strong><span>Sipas viteve, vetëm me të dhëna të verifikuara.</span></Link>
               <Link href="/projektet"><strong>Projektet</strong><span>Aktivitetet dhe mbështetjet e Shoqatës.</span></Link>
-              <div><strong>Dokumentet</strong><span>Formularë, statut dhe dokumente publike.</span></div>
-              <div><strong>Donacionet</strong><span>Të ndara nga pagesat e anëtarësisë.</span></div>
+              <Link href="/dokumentet"><strong>Dokumentet</strong><span>Formularë, statut dhe dokumente publike.</span></Link>
+              <Link href="/donacionet"><strong>Donacionet</strong><span>Të ndara nga pagesat e anëtarësisë.</span></Link>
             </div>
           </div>
         </section>
