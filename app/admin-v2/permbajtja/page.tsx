@@ -1,4 +1,5 @@
 import Link from "next/link";
+import DirectUploadField from "@/components/admin/DirectUploadField";
 import { redirect } from "next/navigation";
 import {
   createEventV2,
@@ -82,7 +83,7 @@ export default async function AdminContentPage({
               <label><span>Detaje</span><textarea name="details" rows={3} placeholder="Çmimet, rezervimi, kontakte..." /></label>
               <label><span>Lokacioni</span><input name="location" required /></label>
               <label><span>Data dhe ora</span><input name="startsAt" type="datetime-local" required /></label>
-              <label><span>Foto / URL</span><input name="imageUrl" placeholder="https://..." /></label>
+              <DirectUploadField name="imageUrl" label="Foto / URL" accept="image/jpeg,image/png,image/webp,image/gif" />
               <label className="admin-check"><input name="published" type="checkbox" defaultChecked /> Publiko</label>
               <button type="submit">Shto eventin</button>
             </form>
@@ -101,7 +102,7 @@ export default async function AdminContentPage({
                     <label className="span-two"><span>Detaje</span><textarea name="details" rows={3} defaultValue={event.details || ""} /></label>
                     <label><span>Lokacioni</span><input name="location" defaultValue={event.location} required /></label>
                     <label><span>Data dhe ora</span><input name="startsAt" type="datetime-local" defaultValue={inputDateTime(event.startsAt)} required /></label>
-                    <label className="span-two"><span>Foto / URL</span><input name="imageUrl" defaultValue={event.imageUrl || ""} /></label>
+                    <DirectUploadField className="span-two" name="imageUrl" label="Foto / URL" accept="image/jpeg,image/png,image/webp,image/gif" defaultValue={event.imageUrl || ""} />
                     <label className="admin-check span-two"><input name="published" type="checkbox" defaultChecked={event.published} /> Publiko</label>
                     <button type="submit">Ruaj eventin</button>
                   </form>
@@ -154,7 +155,7 @@ export default async function AdminContentPage({
                     <label><span>Statusi</span><input name="status" defaultValue={project.status} required /></label>
                     <label><span>Viti</span><input name="year" type="number" defaultValue={project.year} required /></label>
                     <label><span>Buxheti</span><input name="budget" type="number" min="0" step="0.01" defaultValue={project.budget || ""} /></label>
-                    <label className="span-two"><span>Foto / URL</span><input name="imageUrl" defaultValue={project.imageUrl || ""} /></label>
+                    <DirectUploadField className="span-two" name="imageUrl" label="Foto / URL" accept="image/jpeg,image/png,image/webp,image/gif" defaultValue={project.imageUrl || ""} />
                     <label className="admin-check span-two"><input name="published" type="checkbox" defaultChecked={project.published} /> Publiko</label>
                     <button type="submit">Ruaj projektin</button>
                   </form>
