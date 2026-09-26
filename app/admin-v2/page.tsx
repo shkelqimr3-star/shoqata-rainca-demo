@@ -1,9 +1,8 @@
 // redeploy-after-admin-v2-preview-env-2
 import Link from "next/link";
-import { memberRecords } from "@/data/member-records";
 import { getV2Members } from "@/lib/v2-members";
 import { isV2Admin, v2AdminConfigured } from "@/lib/v2-auth";
-import { loginV2, logoutV2, savePaymentOverride } from "./actions";
+import { deletePaymentOverride, loginV2, logoutV2, savePaymentOverride } from "./actions";
 
 function methodLabel(value: string) {
   const map: Record<string,string> = { bank: "Bankë", qr: "QR", cash: "Cash", twint: "TWINT", "ch-dd": "CH-DD" };
@@ -33,7 +32,7 @@ export default async function AdminV2Page({ searchParams }: { searchParams: Prom
     );
   }
 
-  const { members, databaseMode, overrides } = await getV2Members();
+  const { members, databaseMode, overrides } = await getV2Members();\n  const activeMembers = members.filter((m) => !m.archived);
   const recent = [...overrides].sort((a,b) => b.updatedAt.getTime() - a.updatedAt.getTime()).slice(0,20);
 
   return (
@@ -45,7 +44,7 @@ export default async function AdminV2Page({ searchParams }: { searchParams: Prom
             <h1>Pagesat e anëtarëve</h1>
           </div>
           <div className="admin-v2-actions">
-            <Link href="/antaret">Shiko listën publike</Link>
+            <Link href="/admin-v2/antaret">Anëtarët</Link>\n            <Link href="/antaret">Shiko listën publike</Link>
             <form action={logoutV2}><button type="submit">Dil</button></form>
           </div>
         </div>
@@ -57,7 +56,7 @@ export default async function AdminV2Page({ searchParams }: { searchParams: Prom
         </div>
 
         {!databaseMode && <div className="admin-v2-alert">DATABASE_URL nuk është aktiv në këtë environment. Formulari nuk duhet përdorur derisa databaza të lidhet.</div>}
-        {params.saved === "1" && <div className="admin-v2-success">Pagesa u ruajt dhe lista publike u përditësua.</div>}
+        {params.saved === "1" && <div className="admin-v2-success">Pagesa u ruajt dhe lista publike u përditësua.</div>}\n        {params.reverted === "1" && <div className="admin-v2-success">Ndryshimi i pagesës u hoq dhe u rikthye vlera nga lista bazë.</div>}
         {params.error && params.error !== "1" && <div className="admin-v2-alert">Nuk u ruajt ndryshimi ({String(params.error)}).</div>}
 
         <div className="admin-v2-grid">
@@ -68,7 +67,7 @@ export default async function AdminV2Page({ searchParams }: { searchParams: Prom
             <form action={savePaymentOverride} className="admin-v2-form">
               <label><span>Anëtari</span><select name="sourceIndex" required defaultValue="">
                 <option value="" disabled>Zgjidh anëtarin…</option>
-                {memberRecords.map((m) => <option key={m.sourceIndex} value={m.sourceIndex}>{m.sourceNo}. {m.firstName} {m.lastName}</option>)}
+                {activeMembers.map((m) => <option key={m.sourceIndex} value={m.sourceIndex}>{m.sourceNo}. {m.firstName} {m.lastName}</option>)}
               </select></label>
               <div className="admin-v2-inline">
                 <label><span>Viti</span><select name="year" defaultValue="2026"><option>2023</option><option>2024</option><option>2025</option><option>2026</option></select></label>
@@ -85,7 +84,7 @@ export default async function AdminV2Page({ searchParams }: { searchParams: Prom
             {recent.length === 0 ? <div className="admin-v2-empty">Ende nuk ka ndryshime të ruajtura nga Admin v2.</div> :
               <div className="admin-v2-recent">{recent.map((row) => {
                 const member = members.find((m) => m.sourceIndex === row.sourceIndex);
-                return <article key={row.id}><div><strong>{member?.firstName} {member?.lastName}</strong><span>{row.year} · {methodLabel(row.method)}</span></div><b>{row.amount > 0 ? `${row.amount} CHF` : "Pa pagesë"}</b></article>;
+                return <article key={row.id}><div><strong>{member?.firstName} {member?.lastName}</strong><span>{row.year} · {methodLabel(row.method)}</span></div><div className="admin-payment-row-actions"><b>{row.amount > 0 ? `${row.amount} CHF` : "Pa pagesë"}</b><form action={deletePaymentOverride}><input type="hidden" name="id" value={row.id} /><button type="submit">Hiq ndryshimin</button></form></div></article>;
               })}</div>
             }
           </section>
