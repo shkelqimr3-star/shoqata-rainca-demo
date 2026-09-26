@@ -1,4 +1,4 @@
-// redeploy-after-admin-v2-env
+// redeploy-after-preview-env
 import Link from "next/link";
 import { memberRecords } from "@/data/member-records";
 import { getV2Members } from "@/lib/v2-members";
