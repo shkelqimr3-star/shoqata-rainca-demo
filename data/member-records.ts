@@ -6,6 +6,8 @@ export type MemberRecord = {
   firstName: string;
   lastName: string;
   neighborhood: string | null;
+  archived?: boolean;
+  isNew?: boolean;
   payments: Record<PaymentYear, number>;
 };
 
@@ -17,6 +19,8 @@ export const memberRecords: MemberRecord[] = rows.map((row, index) => ({
   firstName: row[1],
   lastName: row[2],
   neighborhood: null,
+  archived: false,
+  isNew: false,
   payments: { "2023": row[3], "2024": row[4], "2025": row[5], "2026": row[6] }
 }));
 
