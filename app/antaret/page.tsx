@@ -7,7 +7,8 @@ export const dynamic = "force-dynamic";
 
 export default async function MembersPage() {
   const { members, databaseMode, overrides } = await getV2Members();
-  const paid2026 = members.filter((m) => m.payments["2026"] > 0).length;
+  const activeMembers = members.filter((m) => !m.archived);
+  const paid2026 = activeMembers.filter((m) => m.payments["2026"] > 0).length;
 
   return (
     <>
