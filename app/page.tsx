@@ -20,7 +20,7 @@ export default async function Home() {
         <div className="shell nav-wrap">
           <Link className="brand" href="/" aria-label="Shoqata Rainca">
             <img className="brand-symbol" src="/rainca-trees.svg" alt="" width={56} height={40} />
-            <span><strong>Shoqata <span className="brand-name">RA<span className="brand-i">i</span>NCA</span></strong><small>Që nga viti 2010</small></span>
+            <span><strong>Shoqata Rainca</strong><small>Që nga viti 2010</small></span>
           </Link>
           <nav>
             <Link href="/eventet">Eventet</Link>

@@ -13,7 +13,7 @@ export default async function EventsPage() {
     <>
       <header className="site-header">
         <div className="shell nav-wrap">
-          <Link className="brand" href="/"><img className="brand-symbol" src="/rainca-trees.svg" alt="" width={56} height={40} /><span><strong>Shoqata <span className="brand-name">RA<span className="brand-i">i</span>NCA</span></strong><small>Që nga viti 2010</small></span></Link>
+          <Link className="brand" href="/"><img className="brand-symbol" src="/rainca-trees.svg" alt="" width={56} height={40} /><span><strong>Shoqata Rainca</strong><small>Që nga viti 2010</small></span></Link>
           <nav><Link href="/">Ballina</Link><Link href="/eventet">Eventet</Link><Link href="/projektet">Projektet</Link><Link href="/antaret">Anëtarët</Link></nav>
         </div>
       </header>
