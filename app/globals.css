@@ -97,3 +97,23 @@
     animation-duration: .01ms !important;
   }
 }
+
+
+/* Official association emblem - Shoqata Rainca */
+.brand-symbol {
+  display: block;
+  width: 56px;
+  height: 40px;
+  flex: 0 0 56px;
+  object-fit: contain;
+}
+.brand-name {
+  font-weight: 900;
+  letter-spacing: -0.025em;
+}
+.brand-i { color: #cf1724; }
+.brand strong { font-size: 15px; }
+@media (max-width: 480px) {
+  .brand-symbol { width: 48px; height: 35px; flex-basis: 48px; }
+  .brand strong { font-size: 14px; }
+}
