@@ -53,19 +53,6 @@ export default async function Home() {
         </section>
 
 
-        <section className="section about-home-section" aria-labelledby="rreth-shoqates-heading">
-          <div className="shell about-home-grid">
-            <div>
-              <span className="eyebrow">RRETH SHOQATËS</span>
-              <h2 id="rreth-shoqates-heading">Bashkë për vendlindjen tonë.</h2>
-            </div>
-            <div className="about-home-copy">
-              <p>Që nga viti 2010, Shoqata Rainca bashkon kontributet e bashkëvendasve për të mbështetur familjet, komunitetin dhe zhvillimin e fshatit.</p>
-              <Link className="about-text-link" href="/rreth-shoqates">Njihu me historinë dhe misionin e Shoqatës <span aria-hidden="true">→</span></Link>
-            </div>
-          </div>
-        </section>
-
         {nextEvent && <section id="eventi" className="section event-section">
           <div className="shell">
             <div className="section-head">
@@ -131,6 +118,18 @@ export default async function Home() {
               <Link href="/projektet"><strong>Projektet</strong><span>Aktivitetet dhe mbështetjet e Shoqatës.</span></Link>
               <Link href="/dokumentet"><strong>Dokumentet</strong><span>Formularë, statut dhe dokumente publike.</span></Link>
               <Link href="/donacionet"><strong>Donacionet</strong><span>Të ndara nga pagesat e anëtarësisë.</span></Link>
+            </div>
+          </div>
+        </section>
+        <section className="section about-home-section" aria-labelledby="rreth-shoqates-heading">
+          <div className="shell about-home-grid">
+            <div>
+              <span className="eyebrow">RRETH SHOQATËS</span>
+              <h2 id="rreth-shoqates-heading">Bashkë për vendlindjen tonë.</h2>
+            </div>
+            <div className="about-home-copy">
+              <p>Që nga viti 2010, Shoqata Rainca bashkon kontributet e bashkëvendasve për të mbështetur familjet, komunitetin dhe zhvillimin e fshatit.</p>
+              <Link className="about-text-link" href="/rreth-shoqates">Njihu me historinë dhe misionin e Shoqatës <span aria-hidden="true">→</span></Link>
             </div>
           </div>
         </section>
