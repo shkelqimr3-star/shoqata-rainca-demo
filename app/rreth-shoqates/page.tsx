@@ -55,11 +55,12 @@ export default function AboutAssociationPage() {
             <div>
               <span className="eyebrow">HISTORIA DHE MISIONI</span>
               <h2>Bashkë për vendlindjen tonë.</h2>
-              <p className="about-story-lead">Shoqata Rainca është themeluar në vitin 2010 nga bashkëvendas të bashkuar me një qëllim të përbashkët: të kontribuojnë për mirëqenien e banorëve dhe zhvillimin e fshatit Raincë.</p>
+              <p className="about-story-lead">Shoqata Rainca është themeluar më 23 maj 2010 në Regensdorf të Zürichut, Zvicër, nga bashkëvendas të bashkuar me një qëllim të përbashkët: të kontribuojnë për mirëqenien e banorëve dhe zhvillimin e fshatit Raincë.</p>
             </div>
             <div className="about-story-text">
               <p>E mbështetur në solidaritetin dhe kontributet vullnetare të anëtarëve dhe bashkëvendasve, Shoqata ndër vite ka realizuar dhe mbështetur nisma humanitare, arsimore, kulturore, sportive dhe komunitare.</p>
               <p>Përmes bashkëpunimit mes bashkëvendasve në mërgim dhe banorëve të Raincës, Shoqata synon të ruajë lidhjet me vendlindjen dhe të kontribuojë për një të ardhme më të mirë të komunitetit.</p>
+              <p className="statute-about-note">Sipas statutit, themelimi i Shoqatës erdhi pas realizimit të projektit “Rrethimi i varrezave”. <Link href="/dokumentet">Lexo statutin origjinal →</Link></p>
             </div>
           </div>
         </section>
