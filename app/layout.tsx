@@ -3,7 +3,8 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Shoqata Rainca",
-  description: "Faqja zyrtare e Shoqatës Rainca – aktivitete, projekte, anëtarësi dhe transparencë."
+  description: "Faqja zyrtare e Shoqatës Rainca – aktivitete, projekte, anëtarësi dhe transparencë.",
+  icons: { icon: "/rainca-trees.svg", shortcut: "/rainca-trees.svg" }
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
