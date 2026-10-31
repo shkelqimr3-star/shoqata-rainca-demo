@@ -34,8 +34,10 @@ export default async function Home() {
       </header>
 
       <main id="top">
-        <section className="hero">
-          <div className="hero-overlay" />
+        <section className="hero hero-with-original-photo">
+          <div className="hero-original-photo">
+            <img src="/rainca-original.jpeg" width={1536} height={2048} alt="Pamje origjinale e fshatit Raincë me peizazhin dhe vulën Rainca Info" fetchPriority="high" />
+          </div>
           <div className="shell hero-inner">
             <div className="hero-copy">
               <span className="eyebrow light">SHOQATA RAINCA</span>
