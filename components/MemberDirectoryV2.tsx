@@ -5,9 +5,8 @@ import type { MemberRecord, PaymentYear } from "@/data/member-records";
 
 const years: PaymentYear[] = ["2026", "2025", "2024", "2023"];
 
-function paymentLabel(amount: number) {
-  if (!amount) return "—";
-  return amount === 100 ? "✓" : String(amount);
+function paymentLabel(amount: number, isBlank: boolean) {
+  return isBlank ? "—" : String(amount);
 }
 
 export default function MemberDirectoryV2({ members }: { members: MemberRecord[] }) {
@@ -146,21 +145,22 @@ export default function MemberDirectoryV2({ members }: { members: MemberRecord[]
                 {(["2023", "2024", "2025", "2026"] as PaymentYear[]).map(
                   (paymentYear) => {
                     const amount = member.payments[paymentYear];
+                    const isBlank = member.blankYears?.includes(paymentYear) ?? false;
                     return (
                       <td key={paymentYear}>
                         <span
                           className={
-                            amount
+                            amount > 0
                               ? "payment-badge paid"
                               : "payment-badge open"
                           }
                           title={
-                            amount
-                              ? `${amount} CHF sipas listës`
-                              : "Pa pagesë të regjistruar"
+                            isBlank
+                              ? "Nuk ka shumë të shënuar në dokument"
+                              : `${amount} CHF sipas listës`
                           }
                         >
-                          {paymentLabel(amount)}
+                          {paymentLabel(amount, isBlank)}
                         </span>
                       </td>
                     );

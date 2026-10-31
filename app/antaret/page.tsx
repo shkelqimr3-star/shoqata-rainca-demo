@@ -52,7 +52,7 @@ export default async function MembersPage() {
             </div>
             <MemberDirectoryV2 members={activeMembers} />
             <div className="source-note">
-              <strong>Shënim i burimit:</strong> numri 24 paraqitet dy herë në dokumentin origjinal. Të dhënat janë ruajtur siç janë në listë dhe korrigjohen vetëm pas verifikimit nga Shoqata.
+              <strong>Burimi:</strong> Lista e anëtarëve e Shoqatës Rainca, 29.10.2026. Vlerat shfaqen në CHF sipas dokumentit. Shenja “—” nënkupton qelizë bosh, ndërsa “0” është shumë e shënuar si zero. Përditësimet e ruajtura nga administratori aplikohen veçmas.
             </div>
           </div>
         </section>

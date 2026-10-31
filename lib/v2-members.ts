@@ -28,7 +28,8 @@ function cloneMembers(): MemberRecord[] {
     ...m,
     archived: false,
     isNew: false,
-    payments: { ...m.payments }
+    payments: { ...m.payments },
+    blankYears: [...(m.blankYears || [])]
   }));
 }
 
@@ -132,6 +133,7 @@ export async function getV2Members() {
       if (!member) continue;
       const amount = numberValue(row.amountPaid);
       member.payments[parsed.year] = amount;
+      member.blankYears = (member.blankYears || []).filter((year) => year !== parsed.year);
       overrides.push({
         id: row.id,
         sourceIndex: parsed.sourceIndex,
