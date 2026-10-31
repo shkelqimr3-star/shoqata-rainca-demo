@@ -123,7 +123,7 @@ export default async function Home() {
         <div className="shell footer-grid">
           <div><strong>Shoqata Rainca</strong><span>shoqata-rainca.ch</span></div>
           <div><span>info@shoqata-rainca.ch</span><span>Facebook: Shoqata Rainca</span></div>
-          <div className="footer-note">Versioni i ri · Preview</div>
+          <div className="footer-note">Bashkë për Raincën</div>
         </div>
       </footer>
     </>
