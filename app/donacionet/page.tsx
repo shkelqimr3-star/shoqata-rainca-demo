@@ -16,7 +16,7 @@ export default async function DonationsPage() {
 
   return (
     <>
-      <header className="site-header"><div className="shell nav-wrap"><Link className="brand" href="/"><span className="brand-mark">R</span><span><strong>Shoqata Rainca</strong><small>Që nga viti 2010</small></span></Link><nav><Link href="/">Ballina</Link><Link href="/transparenca">Transparenca</Link><Link href="/dokumentet">Dokumentet</Link><Link href="/donacionet">Donacionet</Link></nav></div></header>
+      <header className="site-header"><div className="shell nav-wrap"><Link className="brand" href="/"><img className="brand-symbol" src="/rainca-trees.svg" alt="" width={56} height={40} /><span><strong>Shoqata <span className="brand-name">RA<span className="brand-i">i</span>NCA</span></strong><small>Që nga viti 2010</small></span></Link><nav><Link href="/">Ballina</Link><Link href="/transparenca">Transparenca</Link><Link href="/dokumentet">Dokumentet</Link><Link href="/donacionet">Donacionet</Link></nav></div></header>
       <main>
         <section className="listing-hero"><div className="shell"><span className="eyebrow light">DONACIONET</span><h1>Mbështet Raincën.</h1><p>Donacionet janë të ndara nga pagesa vjetore e anëtarësisë.</p></div></section>
 
