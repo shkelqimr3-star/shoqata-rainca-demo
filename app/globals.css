@@ -206,3 +206,52 @@
   }
   .hero-with-original-photo h1 { font-size: clamp(48px, 12vw, 62px); }
 }
+
+
+/* About association page, isolated from the original homepage photo and member directory. */
+.about-home-section { border-bottom: 1px solid var(--line); }
+.about-home-grid, .about-story-grid, .about-contribution-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: start;
+  gap: clamp(32px, 7vw, 110px);
+}
+.about-home-copy { max-width: 580px; }
+.about-home-copy p, .about-story-text p, .about-contribution-section p {
+  font-size: 17px;
+  line-height: 1.8;
+  color: var(--muted);
+  margin: 0 0 18px;
+}
+.about-text-link { display:inline-flex; gap: 9px; font-size: 14px; font-weight: 800; color: var(--red); border-bottom: 1px solid currentColor; padding-bottom: 6px; }
+.about-text-link:hover { color: #801d20; }
+.about-page-hero { min-height: 355px; }
+.about-story-lead { font-weight: 650; font-size: clamp(18px, 2vw, 23px); line-height:1.65; margin-top:28px; }
+.about-story-text { padding-top: 40px; }
+.about-commitment-section h2 { max-width: 740px; }
+.about-commitment-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 38px; }
+.about-commitment-card {
+  min-height: 235px;
+  padding: 28px;
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  background: #fff;
+  display:flex;
+  flex-direction:column;
+}
+.about-commitment-card h3 { font-size: 25px; margin: 30px 0 11px; }
+.about-commitment-card p { margin: 0; line-height: 1.65; color: var(--muted); }
+.about-contribution-section { background: var(--dark); color: #fff; }
+.about-contribution-section p { color: #c3c7c3; }
+.about-contribution-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 26px; }
+.about-ending-section { text-align: center; }
+.about-ending-section h2 { margin-bottom: 18px; }
+.about-ending-section p { color: var(--muted); line-height:1.65; }
+@media (max-width: 820px) {
+  .about-home-grid, .about-story-grid, .about-contribution-grid { grid-template-columns: 1fr; gap: 24px; }
+  .about-story-text { padding-top: 0; }
+  .about-commitment-grid { grid-template-columns: 1fr; }
+  .about-commitment-card { min-height: 0; }
+  .about-page-hero { min-height: 310px; }
+}
+@media (prefers-reduced-motion: reduce) { .about-text-link { scroll-behavior:auto; } }

@@ -22,7 +22,8 @@ export default async function Home() {
             <img className="brand-symbol" src="/rainca-trees.svg" alt="" width={56} height={40} />
             <span><strong>Shoqata Rainca</strong><small>Që nga viti 2010</small></span>
           </Link>
-          <nav>
+          <nav aria-label="Navigimi kryesor">
+            <Link href="/rreth-shoqates">Rreth Shoqatës</Link>
             <Link href="/eventet">Eventet</Link>
             <Link href="/projektet">Projektet</Link>
             <Link href="/antaret">Anëtarët</Link>
@@ -47,6 +48,20 @@ export default async function Home() {
                 <Link className="button primary" href="/eventet">Eventet</Link>
                 <Link className="button ghost" href="/antaret">Lista e anëtarëve</Link>
               </div>
+            </div>
+          </div>
+        </section>
+
+
+        <section className="section about-home-section" aria-labelledby="rreth-shoqates-heading">
+          <div className="shell about-home-grid">
+            <div>
+              <span className="eyebrow">RRETH SHOQATËS</span>
+              <h2 id="rreth-shoqates-heading">Bashkë për vendlindjen tonë.</h2>
+            </div>
+            <div className="about-home-copy">
+              <p>Që nga viti 2010, Shoqata Rainca bashkon kontributet e bashkëvendasve për të mbështetur familjet, komunitetin dhe zhvillimin e fshatit.</p>
+              <Link className="about-text-link" href="/rreth-shoqates">Njihu me historinë dhe misionin e Shoqatës <span aria-hidden="true">→</span></Link>
             </div>
           </div>
         </section>
