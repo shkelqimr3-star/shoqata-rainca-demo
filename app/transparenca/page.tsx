@@ -1,3 +1,5 @@
+import SiteFooter from "@/components/public/SiteFooter";
+import SiteHeader from "@/components/public/SiteHeader";
 import Link from "next/link";
 import {
   formatMoney,
@@ -23,12 +25,7 @@ export default async function TransparencyPage() {
 
   return (
     <>
-      <header className="site-header">
-        <div className="shell nav-wrap">
-          <Link className="brand" href="/"><span className="brand-mark">R</span><span><strong>Shoqata Rainca</strong><small>Që nga viti 2010</small></span></Link>
-          <nav><Link href="/">Ballina</Link><Link href="/projektet">Projektet</Link><Link href="/transparenca">Transparenca</Link><Link href="/dokumentet">Dokumentet</Link><Link href="/donacionet">Donacionet</Link></nav>
-        </div>
-      </header>
+      <SiteHeader />
       <main>
         <section className="listing-hero">
           <div className="shell"><span className="eyebrow light">TRANSPARENCA</span><h1>Raporte të qarta.</h1><p>Publikohen vetëm të dhënat dhe dokumentet që Shoqata i ka verifikuar.</p></div>
@@ -86,6 +83,7 @@ export default async function TransparencyPage() {
           </div>
         </section>
       </main>
+    <SiteFooter />
     </>
   );
 }
