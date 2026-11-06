@@ -1,3 +1,5 @@
+import SiteFooter from "@/components/public/SiteFooter";
+import SiteHeader from "@/components/public/SiteHeader";
 import Link from "next/link";
 import MemberDirectoryV2 from "@/components/MemberDirectoryV2";
 import { membershipSnapshot } from "@/data/member-records";
@@ -7,25 +9,12 @@ export const dynamic = "force-dynamic";
 
 export default async function MembersPage() {
   const { members, databaseMode, overrides } = await getV2Members();
-  const paid2026 = members.filter((m) => m.payments["2026"] > 0).length;
+  const activeMembers = members.filter((m) => !m.archived);
+  const paid2026 = activeMembers.filter((m) => m.payments["2026"] > 0).length;
 
   return (
     <>
-      <header className="site-header">
-        <div className="shell nav-wrap">
-          <Link className="brand" href="/" aria-label="Shoqata Rainca">
-            <span className="brand-mark">R</span>
-            <span><strong>Shoqata Rainca</strong><small>Që nga viti 2010</small></span>
-          </Link>
-          <nav>
-            <Link href="/">Ballina</Link>
-            <Link href="/#aktivitetet">Aktivitetet</Link>
-            <Link href="/antaret">Anëtarët</Link>
-            <Link href="/#anetaresia">Anëtarësia</Link>
-          </nav>
-        </div>
-      </header>
-
+      <SiteHeader />
       <main>
         <section className="members-hero">
           <div className="shell members-hero-grid">
@@ -64,13 +53,7 @@ export default async function MembersPage() {
         </section>
       </main>
 
-      <footer>
-        <div className="shell footer-grid">
-          <div><strong>Shoqata Rainca</strong><span>shoqata-rainca.ch</span></div>
-          <div><span>info@shoqata-rainca.ch</span><span>Facebook: Shoqata Rainca</span></div>
-          <div className="footer-note">Lista · {membershipSnapshot.updatedAt}</div>
-        </div>
-      </footer>
+      <SiteFooter />
     </>
   );
 }
