@@ -1,3 +1,5 @@
+import SiteFooter from "@/components/public/SiteFooter";
+import SiteHeader from "@/components/public/SiteHeader";
 import Link from "next/link";
 import { getV2Projects } from "@/lib/v2-content";
 
@@ -8,12 +10,7 @@ export default async function ProjectsPage() {
 
   return (
     <>
-      <header className="site-header">
-        <div className="shell nav-wrap">
-          <Link className="brand" href="/"><span className="brand-mark">R</span><span><strong>Shoqata Rainca</strong><small>Që nga viti 2010</small></span></Link>
-          <nav><Link href="/">Ballina</Link><Link href="/eventet">Eventet</Link><Link href="/projektet">Projektet</Link><Link href="/antaret">Anëtarët</Link></nav>
-        </div>
-      </header>
+      <SiteHeader />
       <main>
         <section className="listing-hero"><div className="shell"><span className="eyebrow light">PUNA E SHOQATËS</span><h1>Projektet</h1><p>Aktivitete dhe mbështetje konkrete për Raincën dhe komunitetin.</p></div></section>
         <section className="section"><div className="shell">
@@ -27,6 +24,7 @@ export default async function ProjectsPage() {
           </div>
         </div></section>
       </main>
+    <SiteFooter />
     </>
   );
 }
