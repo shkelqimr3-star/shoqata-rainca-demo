@@ -1,3 +1,5 @@
+import SiteFooter from "@/components/public/SiteFooter";
+import SiteHeader from "@/components/public/SiteHeader";
 import Link from "next/link";
 import {
   formatEventDate,
@@ -16,23 +18,7 @@ export default async function Home() {
 
   return (
     <>
-      <header className="site-header">
-        <div className="shell nav-wrap">
-          <Link className="brand" href="/" aria-label="Shoqata Rainca">
-            <span className="brand-mark">R</span>
-            <span><strong>Shoqata Rainca</strong><small>Që nga viti 2010</small></span>
-          </Link>
-          <nav>
-            <Link href="/eventet">Eventet</Link>
-            <Link href="/projektet">Projektet</Link>
-            <Link href="/antaret">Anëtarët</Link>
-            <Link href="/galeria">Galeria</Link>
-            <a href="#anetaresia">Anëtarësia</a>
-            <Link href="/transparenca">Transparenca</Link>
-          </nav>
-        </div>
-      </header>
-
+      <SiteHeader />
       <main id="top">
         <section className="hero">
           <div className="hero-overlay" />
@@ -119,13 +105,7 @@ export default async function Home() {
         </section>
       </main>
 
-      <footer id="kontakt">
-        <div className="shell footer-grid">
-          <div><strong>Shoqata Rainca</strong><span>shoqata-rainca.ch</span></div>
-          <div><span>info@shoqata-rainca.ch</span><span>Facebook: Shoqata Rainca</span></div>
-          <div className="footer-note">Versioni i ri · Preview</div>
-        </div>
-      </footer>
+      <SiteFooter />
     </>
   );
 }
