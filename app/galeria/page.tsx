@@ -1,3 +1,5 @@
+import SiteFooter from "@/components/public/SiteFooter";
+import SiteHeader from "@/components/public/SiteHeader";
 import Link from "next/link";
 import { getV2Gallery } from "@/lib/v2-gallery";
 
@@ -9,12 +11,7 @@ export default async function GalleryPage() {
 
   return (
     <>
-      <header className="site-header">
-        <div className="shell nav-wrap">
-          <Link className="brand" href="/"><span className="brand-mark">R</span><span><strong>Shoqata Rainca</strong><small>Që nga viti 2010</small></span></Link>
-          <nav><Link href="/">Ballina</Link><Link href="/eventet">Eventet</Link><Link href="/projektet">Projektet</Link><Link href="/galeria">Galeria</Link><Link href="/transparenca">Transparenca</Link></nav>
-        </div>
-      </header>
+      <SiteHeader />
       <main>
         <section className="listing-hero"><div className="shell"><span className="eyebrow light">GALERIA</span><h1>Rainca në fotografi.</h1><p>Foto dhe video nga aktivitetet e Shoqatës, të organizuara sipas vitit dhe eventit.</p></div></section>
 
@@ -45,6 +42,7 @@ export default async function GalleryPage() {
           </div>
         </section>
       </main>
+    <SiteFooter />
     </>
   );
 }
