@@ -10,7 +10,14 @@ export const dynamic = "force-dynamic";
 export default async function MembersPage() {
   const { members, databaseMode, overrides } = await getV2Members();
   const activeMembers = members.filter((m) => !m.archived);
-  const paid2026 = activeMembers.filter((m) => m.payments["2026"] > 0).length;
+  const years = ["2023", "2024", "2025", "2026"] as const;
+  const paymentStats = years.map((year) => {
+    const paid = activeMembers.filter((m) => m.payments[year] > 0).length;
+    const percentage = activeMembers.length ? Math.round((paid / activeMembers.length) * 100) : 0;
+    return { year, paid, percentage };
+  });
+  const currentStat = paymentStats.find((item) => item.year === "2026")!;
+  const maxPaid = Math.max(...paymentStats.map((item) => item.paid), 1);
 
   return (
     <>
@@ -24,11 +31,49 @@ export default async function MembersPage() {
               <p>Publikohen vetëm emri, mbiemri dhe pagesat e regjistruara sipas viteve. Adresa, telefoni dhe emaili nuk shfaqen publikisht.</p>
               <small>Burimi fillestar: lista e përditësuar më {membershipSnapshot.updatedAt}.{databaseMode && overrides.length > 0 ? " Ndryshimet e verifikuara nga Admini aplikohen mbi listën burimore." : ""}</small>
             </div>
-            <aside className="members-stat">
-              <span>Anëtarë në listë</span>
-              <strong>{activeMembers.length}</strong>
-              <small>{paid2026} me pagesë të regjistruar për 2026</small>
+            <aside className="members-stat members-stat-current">
+              <span>Pagesa e anëtarësisë · 2026</span>
+              <div className="members-current-number">
+                <strong>{currentStat.paid}</strong>
+                <em>nga {activeMembers.length}</em>
+              </div>
+              <small>{currentStat.percentage}% e anëtarëve kanë pagesë të regjistruar për këtë vit</small>
             </aside>
+          </div>
+        </section>
+
+
+        <section className="section payment-history-section">
+          <div className="shell">
+            <div className="section-head payment-history-head">
+              <div>
+                <span className="eyebrow">PAGESAT NDËR VITE</span>
+                <h2>Sa anëtarë kanë paguar?</h2>
+              </div>
+              <p className="section-note">Numërohen anëtarët që kanë një pagesë të regjistruar më të madhe se 0 për vitin përkatës. Shifrat përditësohen automatikisht kur administratori regjistron ose korrigjon një pagesë.</p>
+            </div>
+
+            <div className="payment-history-grid">
+              {paymentStats.map((stat) => (
+                <article key={stat.year} className={`payment-year-card ${stat.year === "2026" ? "is-current" : ""}`}>
+                  <div className="payment-year-top">
+                    <span>{stat.year}</span>
+                    {stat.year === "2026" && <b>Këtë vit</b>}
+                  </div>
+                  <div className="payment-year-number">
+                    <strong>{stat.paid}</strong>
+                    <span>anëtarë</span>
+                  </div>
+                  <div className="payment-progress" aria-label={`${stat.percentage}% kanë paguar në ${stat.year}`}>
+                    <i style={{ width: `${(stat.paid / maxPaid) * 100}%` }} />
+                  </div>
+                  <div className="payment-year-bottom">
+                    <span>{stat.percentage}% e listës aktuale</span>
+                    <span>{activeMembers.length - stat.paid} pa pagesë</span>
+                  </div>
+                </article>
+              ))}
+            </div>
           </div>
         </section>
 
