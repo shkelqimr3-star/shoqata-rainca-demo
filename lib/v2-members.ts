@@ -61,6 +61,41 @@ function parseProfile(note: string | null | undefined) {
   };
 }
 
+async function cleanupPresentationTestData() {
+  // One-time cleanup of the exact records created during our preview tests.
+  await prisma.member.deleteMany({
+    where: {
+      name: "Adem",
+      surname: "Aliji",
+      notes: { startsWith: "V2_OVERRIDE:2:2026:" },
+      amountPaid: "100"
+    }
+  }).catch(() => undefined);
+
+  const testProfiles = await prisma.member.findMany({
+    where: {
+      name: "Shkelqim",
+      surname: "Rexhepi",
+      city: "Ukaj",
+      notes: { startsWith: "V2_PROFILE:" }
+    }
+  }).catch(() => []);
+
+  for (const row of testProfiles) {
+    const parsed = parseProfile(row.notes);
+    if (!parsed || parsed.kind !== "NEW" || parsed.sourceNo !== 273) continue;
+
+    await prisma.member.deleteMany({
+      where: {
+        OR: [
+          { id: row.id },
+          { notes: { startsWith: `V2_OVERRIDE:${parsed.sourceIndex}:` } }
+        ]
+      }
+    }).catch(() => undefined);
+  }
+}
+
 export async function getV2Members() {
   const members = cloneMembers();
   if (!process.env.DATABASE_URL) {
@@ -73,6 +108,8 @@ export async function getV2Members() {
   }
 
   try {
+    await cleanupPresentationTestData();
+
     const rows = await prisma.member.findMany({
       where: {
         OR: [
