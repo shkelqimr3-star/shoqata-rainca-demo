@@ -1,3 +1,5 @@
+import SiteFooter from "@/components/public/SiteFooter";
+import SiteHeader from "@/components/public/SiteHeader";
 import Link from "next/link";
 import { formatEventDate, formatEventTime, getV2Events } from "@/lib/v2-content";
 
@@ -11,12 +13,7 @@ export default async function EventsPage() {
 
   return (
     <>
-      <header className="site-header">
-        <div className="shell nav-wrap">
-          <Link className="brand" href="/"><span className="brand-mark">R</span><span><strong>Shoqata Rainca</strong><small>Që nga viti 2010</small></span></Link>
-          <nav><Link href="/">Ballina</Link><Link href="/eventet">Eventet</Link><Link href="/projektet">Projektet</Link><Link href="/antaret">Anëtarët</Link></nav>
-        </div>
-      </header>
+      <SiteHeader />
       <main>
         <section className="listing-hero"><div className="shell"><span className="eyebrow light">SHOQATA RAINCA</span><h1>Eventet</h1><p>Datat, lokacionet dhe informacionet kryesore për aktivitetet e Shoqatës.</p></div></section>
         <section className="section"><div className="shell">
@@ -31,6 +28,7 @@ export default async function EventsPage() {
           {past.length > 0 && <><div className="section-head past-head"><div><span className="eyebrow">ARKIVA</span><h2>Eventet e kaluara</h2></div></div><div className="public-project-grid">{past.map((event) => <article className="public-project-card" key={event.id}><span className="pill muted">{formatEventDate(event.startsAt)}</span><h3>{event.title}</h3><p>{event.description}</p><small>{event.location}</small></article>)}</div></>}
         </div></section>
       </main>
+    <SiteFooter />
     </>
   );
 }
